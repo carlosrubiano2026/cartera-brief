@@ -131,3 +131,5 @@ Sin concordancia. Nada que evaluar por esta via.
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
+
+<!-- prueba de publicacion 2026-08-21T16:56:46Z -->
