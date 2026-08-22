@@ -1,4 +1,4 @@
-# DETECTORES DE REGIMEN — 2026-08-22 05:07 UTC
+# DETECTORES DE REGIMEN — 2026-08-22 14:08 UTC
 
 Ultima reespecificacion: **2026-08-22** — el historial de `regime_history.csv` cuenta desde ahi; lo de antes queda en `regime_history.pre-audit.csv`.
 
