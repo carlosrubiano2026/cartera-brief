@@ -1,4 +1,4 @@
-# DETECTORES DE REGIMEN — 2026-08-23 00:38 UTC
+# DETECTORES DE REGIMEN — 2026-08-23 05:19 UTC
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.0 meses, EN RODAJE)
@@ -17,7 +17,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-DFM | P(estres) suavizada | — | 0.70 | no | 713 | mecanismo de outliers · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.246 | 0.35 | no | 681 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.559 | 0.90 | no | 685 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.791 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.365 | 0.90 | no | 7 | ok · rodaje |
 
 **Concordancia: 0 de 3 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, MS-DFM ~0.15, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y DOS DE ELLOS NO SON PROBABILIDADES -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
@@ -158,11 +158,11 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1001 | 4.38 | cola pesada | 0.896 | 2.63 |
-| ETH | 1001 | 3.74 | cola pesada | 0.809 | 2.66 |
-| BNSOL | 1001 | 6.70 | cola pesada | 0.914 | 2.54 |
-| BNB | 1001 | 4.21 | cola pesada | 0.976 | 2.64 |
-| PAXG | 1001 | 3.71 | cola pesada | 0.845 | 2.66 |
+| BTC | 1002 | 4.37 | cola pesada | 0.318 | 2.63 |
+| ETH | 1002 | 3.74 | cola pesada | 0.249 | 2.66 |
+| BNSOL | 1002 | 6.68 | cola pesada | 0.321 | 2.54 |
+| BNB | 1002 | 4.21 | cola pesada | 0.208 | 2.64 |
+| PAXG | 1002 | 3.69 | cola pesada | 0.489 | 2.66 |
 | SPYB | 8447 | 6.44 | cola pesada | 0.714 | 2.55 |
 | SMHB | 6592 | 9.45 | cola pesada | 0.429 | 2.48 |
 
@@ -176,26 +176,6 @@ No calculados en esta corrida. Se estiman los viernes o con `--stderr`: el Hessi
 
 ---
 
-## Risk budgeting — reparto del aporte mensual
-
-Contribucion marginal y total al riesgo desde Sigma=D·R·D del cDCC (D de GARCH univariante por posicion, R=`rho_hoy`). Las contribuciones (PCTR) suman 100% del riesgo de cartera por identidad de Euler, no por normalizacion.
-
-> **Los pesos objetivo de `portfolio.yaml` son de CAPITAL, no de RIESGO. Usarlos como objetivo de contribucion al riesgo es una decision NO tomada todavia** -es la limitacion que mas importa de esta seccion: la brecha de abajo compara PCTR contra un objetivo que nunca se penso en terminos de riesgo.
-
-| Posicion | Peso actual | Contrib. riesgo (PCTR) | Peso objetivo | Brecha | Aporte sugerido ($) |
-|---|---|---|---|---|---|
-| BTC | 26.1% | 35.2% | 24.0% | -11.2pp | 0 |
-| ETH | 17.1% | 27.3% | 15.0% | -12.3pp | 0 |
-| BNSOL | 9.9% | 17.0% | 10.0% | -7.0pp | 0 |
-| BNB | 10.5% | 10.4% | 10.0% | -0.4pp | 0 |
-| PAXG | 9.5% | 3.6% | 10.0% | +6.4pp | 20 |
-| SPYB | 17.6% | 2.9% | 20.0% | +17.1pp | 170 |
-| SMHB | 9.3% | 3.6% | 10.0% | +6.4pp | 10 |
-
-sigma_p actual: 2.2795 -> tras el aporte: 1.4988. Reparto voraz (sin optimizador convexo): en pasos de $5, compra siempre la posicion con mayor brecha, recalculando tras cada paso. SOLO-COMPRA: nunca vende (vender antes de 2028-08-18 dispara renta ordinaria).
-
----
-
 ## Lectura conjunta
 
 Sin concordancia. Nada que evaluar por esta via.
@@ -204,7 +184,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-DFM**: loglik=-3472.3, 4 series, muestra comun 2023-11-14..2026-08-20, Kim conjunto — p_ii(estres)=0.370 < 0.5: no es un regimen distinguible, ver tabla de Markov
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.70 vs mediana 1.30, persistencia phi=0.81
 - **cDCC**: pctl_corr=0.559 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.33, -0.26, -0.52], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.896; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.318; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
