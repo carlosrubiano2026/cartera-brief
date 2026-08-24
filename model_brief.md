@@ -1,25 +1,23 @@
-# DETECTORES DE REGIMEN — 2026-08-24 05:20 UTC
+# DETECTORES DE REGIMEN — 2026-08-24 17:37 UTC
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.1 meses, EN RODAJE)
-- **MS-DFM**: 2026-08-22 (0.1 meses, EN RODAJE)
 - **BVAR-SV**: 2026-08-22 (0.1 meses, EN RODAJE)
 - **cDCC**: 2026-08-23 (0.0 meses, EN RODAJE)
 - **GARCH-t**: 2026-08-23 (0.0 meses, EN RODAJE)
 
-> **EN RODAJE**: MS-VAR, MS-DFM, BVAR-SV, cDCC, GARCH-t siguen acumulando historial (umbral 6 meses desde su propia respec_fecha). Mientras cualquiera este en rodaje, **ninguna salida informa una decision** -se registran para medir la tasa de falsos positivos antes de darles voz.
+> **EN RODAJE**: MS-VAR, BVAR-SV, cDCC, GARCH-t siguen acumulando historial (umbral 6 meses desde su propia respec_fecha). Mientras cualquiera este en rodaje, **ninguna salida informa una decision** -se registran para medir la tasa de falsos positivos antes de darles voz.
 
 ## Resumen
 
 | Modelo | Estadistico | Valor | Umbral | Vota | Obs | Estado |
 |---|---|---|---|---|---|---|
 | MS-VAR | frac 20d en estres | — | 0.50 | no | 685 | identificacion marginal · rodaje |
-| MS-DFM | P(estres) suavizada | — | 0.70 | no | 713 | mecanismo de outliers · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.246 | 0.35 | no | 681 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.559 | 0.90 | no | 685 | ok · rodaje |
 | GARCH-t | extremeza BTC (2 colas) | 0.135 | 0.90 | no | 7 | ok · rodaje |
 
-**Concordancia: 0 de 3 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, MS-DFM ~0.15, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y DOS DE ELLOS NO SON PROBABILIDADES -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
+**Concordancia: 0 de 3 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y DOS DE ELLOS NO SON PROBABILIDADES -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
 ---
 
@@ -29,9 +27,9 @@ MSH-VAR(1) sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_BAMLH0A0HYM2`. Sigma conmuta com
 
 | Ajuste | Valor |
 |---|---|
-| log-verosimilitud | -1584.6 |
+| log-verosimilitud | -1584.2 |
 | parametros | 29 |
-| AIC / BIC | 3227.1 / 3358.4 |
+| AIC / BIC | 3226.5 / 3357.8 |
 | convergencia | **NO** — lectura poco fiable |
 | iteraciones | 571 |
 
@@ -39,88 +37,28 @@ MSH-VAR(1) sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_BAMLH0A0HYM2`. Sigma conmuta com
 
 | Regimen | p_ii | Duracion esperada | Prob. ergodica | |Sigma| |
 |---|---|---|---|---|
-| calma | 0.932 | 14.7d | 0.837 | 6.679e-03 |
-| estres | 0.649 | 2.8d | 0.163 | 7.719e-01 |
+| calma | 0.922 | 12.8d | 0.823 | 6.379e-03 |
+| estres | 0.639 | 2.8d | 0.177 | 7.546e-01 |
 
-Ratio |Sigma| estres/calma: **115.6x** (minimo exigido 3). Prob. suavizada del ultimo dia: 0.274 — inestable, por eso el estadistico reportado es la fraccion de 20 dias.
+Ratio |Sigma| estres/calma: **118.3x** (minimo exigido 3). Prob. suavizada del ultimo dia: 0.294 — inestable, por eso el estadistico reportado es la fraccion de 20 dias.
 
-**Chequeo cruzado de arranques** (criterio: dispersion relativa de duracion; <10% identificado, 10-20% marginal, >20% no identificado — ver models/msvar.py): duracion 2.67d vs 3.17d (**18.5% relativo → marginal**). p11 (rango 0.626-0.684, solo de referencia, ver docstring del modulo), fun 2.3132-2.3143.
+**Chequeo cruzado de arranques** (criterio: dispersion relativa de duracion; <10% identificado, 10-20% marginal, >20% no identificado — ver models/msvar.py): duracion 2.67d vs 3.17d (**18.5% relativo → marginal**). p11 (rango 0.626-0.684, solo de referencia, ver docstring del modulo), fun 2.3128-2.3143.
 
 **Desviaciones tipicas por regimen y correlaciones en estres**
 
 | Serie | sd calma | sd estres | ratio |
 |---|---|---|---|
-| r_BTCUSDT | 2.323 | 4.175 | 1.80 |
-| r_NASDAQ100 | 1.000 | 2.225 | 2.22 |
-| d_BAMLH0A0HYM2 | 0.042 | 0.142 | 3.36 |
+| r_BTCUSDT | 2.306 | 4.144 | 1.80 |
+| r_NASDAQ100 | 0.991 | 2.241 | 2.26 |
+| d_BAMLH0A0HYM2 | 0.042 | 0.141 | 3.38 |
 
 | Par | corr calma | corr estres |
 |---|---|---|
-| r_BTCUSDT / r_NASDAQ100 | 0.298 | 0.409 |
-| r_BTCUSDT / d_BAMLH0A0HYM2 | -0.237 | -0.326 |
-| r_NASDAQ100 / d_BAMLH0A0HYM2 | -0.476 | -0.680 |
+| r_BTCUSDT / r_NASDAQ100 | 0.297 | 0.424 |
+| r_BTCUSDT / d_BAMLH0A0HYM2 | -0.233 | -0.337 |
+| r_NASDAQ100 / d_BAMLH0A0HYM2 | -0.473 | -0.681 |
 
 La correlacion cruzada en estres es lo que un modelo univariante no puede ver, y es lo que salta en un episodio real.
-
----
-
-## MS-DFM — factor comun latente
-
-Filtro de Kim conjunto: factor y regimen en una sola verosimilitud.
-
-Este es un modelo de **comovimiento**. BTCUSDT se captura en vivo a la hora en que corre la tarea diaria (sin hora fija), mientras que VIX/HY OAS/Nasdaq llevan la fecha de su propio cierre de mercado: la misma fecha del panel puede mezclar instantes reales distintos entre columnas (ver docstring de collect_binance.py). No es look-ahead, pero un desfase sistematico entre columnas sesga el comovimiento medido a la baja.
-
-| Ajuste | Valor |
-|---|---|
-| log-verosimilitud | -3472.3 |
-| parametros / obs | 14 / 713 |
-| AIC / BIC | 6972.5 / 7036.5 |
-| convergencia | si |
-
-**Cumulador:** sin cumulador — todas las series puntuales.
-
-
-**Dinamica del factor**
-
-| Parametro | Valor | Lectura |
-|---|---|---|
-| phi1 | -0.154 | AR(1) del factor |
-| phi2 | -0.021 | AR(2) |
-| phi1+phi2 | -0.175 | persistencia; cerca de 1 = factor casi integrado |
-| mu calma | -0.024 |  |
-| mu estres | 8.252 |  |
-| separacion | 8.275 | en sd del factor; si es pequena los regimenes no se distinguen |
-
-**Series descartadas por cobertura insuficiente (<5%)**
-
-| Serie | cobertura |
-|---|---|
-| dram_contract_qoq_pct | 0.3% |
-| btc_etf_flow_wk_musd | 0.0% |
-| hyperscaler_capex_2026_bnusd | 0.1% |
-
-Una serie con muy pocas observaciones no informa el factor: el optimizador la colapsa contra la frontera y deja parametros no identificados.
-
-
-**Cargas y senal-ruido por serie**
-
-Λ mide cuanto pesa cada serie en el factor; la ratio senal-ruido (Λ²/varianza idiosincratica) dice cuanta de su variacion es comun. Una serie con ratio baja no esta informando el factor.
-
-| Serie | cobertura | carga Λ | var idio | senal/ruido |
-|---|---|---|---|---|
-| d_VIXCLS | 100% | 0.928 | 0.149 | 5.76 |
-| r_BTCUSDT | 91% | 0.281 | 0.728 | 0.11 |
-| r_NASDAQ100 | 97% | 0.698 | 0.461 | 1.06 |
-| d_BAMLH0A0HYM2 | 100% | 0.503 | 0.602 | 0.42 |
-
-**Cadena de Markov**
-
-| Regimen | p_ii | Duracion | Ergodica |
-|---|---|---|---|
-| calma | 0.996 | 234.1d | 0.993 |
-| estres | 0.370 | 1.6d | 0.007 |
-
-**p_ii(estres)=0.370 < 0.5: menos persistente que una moneda. Esto no es un regimen, es un mecanismo de outliers** — una componente de mixtura que absorbe dias atipicos de alta desviacion, sin la inercia que definiria un estado economico. Leer `p_stress` de este modelo como "probabilidad de un dia raro", no como "probabilidad de estar en un regimen de estres".
 
 ---
 
@@ -240,8 +178,7 @@ Construidos por bancos centrales o academicos sobre decenas o cientos de series 
 
 Sin concordancia. Nada que evaluar por esta via.
 
-- **MS-VAR**: duracion entre arranques: 2.67d vs 3.17d (18.5% relativo; con verosimilitud casi igual, fun 2.3132 vs 2.3143). en el margen: ni claramente identificado ni claramente no -no vota, pero no se descarta como el caso claro-.
-- **MS-DFM**: loglik=-3472.3, 4 series, muestra comun 2023-11-14..2026-08-20, Kim conjunto — p_ii(estres)=0.370 < 0.5: no es un regimen distinguible, ver tabla de Markov
+- **MS-VAR**: duracion entre arranques: 2.67d vs 3.17d (18.5% relativo; con verosimilitud casi igual, fun 2.3128 vs 2.3143). en el margen: ni claramente identificado ni claramente no -no vota, pero no se descarta como el caso claro-.
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.70 vs mediana 1.30, persistencia phi=0.81
 - **cDCC**: pctl_corr=0.559 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.33, -0.26, -0.52], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
 - **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.567; proxies: SPYB<-SPY, SMHB<-SMH
