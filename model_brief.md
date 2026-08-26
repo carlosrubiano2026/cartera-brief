@@ -1,4 +1,4 @@
-# DETECTORES DE REGIMEN — 2026-08-26 05:17 UTC
+# DETECTORES DE REGIMEN — 2026-08-26 13:47 UTC
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.1 meses, EN RODAJE)
@@ -15,7 +15,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR | frac 20d en estres | — | 0.50 | no | 687 | no identificado · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.120 | 0.35 | no | 683 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.463 | 0.90 | no | 687 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.641 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.789 | 0.90 | no | 7 | ok · rodaje |
 
 **Concordancia: 0 de 3 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y DOS DE ELLOS NO SON PROBABILIDADES -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
@@ -29,34 +29,34 @@ MSH-VAR(1) sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_BAMLH0A0HYM2`. Sigma conmuta com
 |---|---|
 | log-verosimilitud | -1586.9 |
 | parametros | 29 |
-| AIC / BIC | 3231.9 / 3363.3 |
+| AIC / BIC | 3231.8 / 3363.2 |
 | convergencia | **NO** — lectura poco fiable |
-| iteraciones | 573 |
+| iteraciones | 565 |
 
 **Cadena de Markov**
 
 | Regimen | p_ii | Duracion esperada | Prob. ergodica | |Sigma| |
 |---|---|---|---|---|
-| calma | 0.925 | 13.3d | 0.825 | 6.377e-03 |
-| estres | 0.646 | 2.8d | 0.175 | 7.327e-01 |
+| calma | 0.924 | 13.2d | 0.821 | 6.344e-03 |
+| estres | 0.653 | 2.9d | 0.179 | 7.247e-01 |
 
-Ratio |Sigma| estres/calma: **114.9x** (minimo exigido 3). Prob. suavizada del ultimo dia: 0.022 — inestable, por eso el estadistico reportado es la fraccion de 20 dias.
+Ratio |Sigma| estres/calma: **114.2x** (minimo exigido 3). Prob. suavizada del ultimo dia: 0.023 — inestable, por eso el estadistico reportado es la fraccion de 20 dias.
 
-**Chequeo cruzado de arranques** (criterio: dispersion relativa de duracion; <10% identificado, 10-20% marginal, >20% no identificado — ver models/msvar.py): duracion 2.73d vs 2.83d (**3.6% relativo → identificado**). p11 (rango 0.633-0.646, solo de referencia, ver docstring del modulo), fun 2.3100-2.3115.
+**Chequeo cruzado de arranques** (criterio: dispersion relativa de duracion; <10% identificado, 10-20% marginal, >20% no identificado — ver models/msvar.py): duracion 2.73d vs 2.88d (**5.7% relativo → identificado**). p11 (rango 0.633-0.653, solo de referencia, ver docstring del modulo), fun 2.3099-2.3115.
 
 **Desviaciones tipicas por regimen y correlaciones en estres**
 
 | Serie | sd calma | sd estres | ratio |
 |---|---|---|---|
-| r_BTCUSDT | 2.310 | 4.135 | 1.79 |
-| r_NASDAQ100 | 0.990 | 2.226 | 2.25 |
-| d_BAMLH0A0HYM2 | 0.042 | 0.141 | 3.37 |
+| r_BTCUSDT | 2.308 | 4.138 | 1.79 |
+| r_NASDAQ100 | 0.990 | 2.219 | 2.24 |
+| d_BAMLH0A0HYM2 | 0.042 | 0.140 | 3.37 |
 
 | Par | corr calma | corr estres |
 |---|---|---|
-| r_BTCUSDT / r_NASDAQ100 | 0.292 | 0.424 |
+| r_BTCUSDT / r_NASDAQ100 | 0.291 | 0.426 |
 | r_BTCUSDT / d_BAMLH0A0HYM2 | -0.233 | -0.336 |
-| r_NASDAQ100 / d_BAMLH0A0HYM2 | -0.472 | -0.681 |
+| r_NASDAQ100 / d_BAMLH0A0HYM2 | -0.472 | -0.680 |
 
 La correlacion cruzada en estres es lo que un modelo univariante no puede ver, y es lo que salta en un episodio real.
 
@@ -131,11 +131,11 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1005 | 4.39 | cola pesada | 0.179 | 2.63 |
-| ETH | 1005 | 3.74 | cola pesada | 0.275 | 2.66 |
-| BNSOL | 1005 | 6.74 | cola pesada | 0.113 | 2.54 |
-| BNB | 1005 | 4.24 | cola pesada | 0.098 | 2.64 |
-| PAXG | 1005 | 3.68 | cola pesada | 0.596 | 2.66 |
+| BTC | 1005 | 4.40 | cola pesada | 0.105 | 2.63 |
+| ETH | 1005 | 3.74 | cola pesada | 0.226 | 2.66 |
+| BNSOL | 1005 | 6.75 | cola pesada | 0.095 | 2.54 |
+| BNB | 1005 | 4.24 | cola pesada | 0.150 | 2.64 |
+| PAXG | 1005 | 3.68 | cola pesada | 0.372 | 2.66 |
 | SPYB | 8447 | 6.44 | cola pesada | 0.714 | 2.55 |
 | SMHB | 6592 | 9.45 | cola pesada | 0.429 | 2.48 |
 
@@ -157,10 +157,10 @@ Construidos por bancos centrales o academicos sobre decenas o cientos de series 
 
 | Indice | Fecha | Valor | Percentil hist. | Cambio 7d | N obs |
 |---|---|---|---|---|---|
-| NFCI | 2026-08-14 | -0.559 | 30% | -0.004 | 2902 |
-| ANFCI | 2026-08-14 | -0.587 | 25% | 0.004 | 2902 |
+| NFCI | 2026-08-21 | -0.566 | 29% | -0.005 | 2903 |
+| ANFCI | 2026-08-21 | -0.576 | 25% | 0.002 | 2903 |
 | STLFSI4 | 2026-08-14 | -0.829 | 6% | -0.058 | 1703 |
-| CISS (BCE) | 2026-08-24 | 0.015 | 17% | 0.005 | 7220 |
+| CISS (BCE) | 2026-08-25 | 0.016 | 18% | 0.000 | 7221 |
 
 **Mensuales** (cambio vs. ~30 dias antes)
 
@@ -178,10 +178,10 @@ Construidos por bancos centrales o academicos sobre decenas o cientos de series 
 
 Sin concordancia. Nada que evaluar por esta via.
 
-- **MS-VAR**: |Sigma| ratio 114.9 (min 3), duracion 2.8d (min 5): sin regimen distinguible
+- **MS-VAR**: |Sigma| ratio 114.2 (min 3), duracion 2.9d (min 5): sin regimen distinguible
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.42 vs mediana 1.30, persistencia phi=0.75
 - **cDCC**: pctl_corr=0.463 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.31, -0.26, -0.52], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.179; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.105; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
