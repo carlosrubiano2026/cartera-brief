@@ -1,3 +1,4 @@
+<!-- PRUEBA-RAW-TRIAL1-20260826T154927Z -->
 # DETECTORES DE REGIMEN — 2026-08-26 15:39 UTC
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
