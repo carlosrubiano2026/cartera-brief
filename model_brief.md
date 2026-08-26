@@ -1,7 +1,6 @@
-<!-- PRUEBA-RAW-TRIAL3-20260826T155333Z -->
-<!-- PRUEBA-RAW-TRIAL2-20260826T154929Z -->
-<!-- PRUEBA-RAW-TRIAL1-20260826T154927Z -->
-# DETECTORES DE REGIMEN — 2026-08-26 15:39 UTC
+# DETECTORES DE REGIMEN
+
+**Generado (UTC, ISO 8601):** 2026-08-26T16:05:33Z
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.1 meses, EN RODAJE)
@@ -18,7 +17,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR | frac 20d en estres | — | 0.50 | no | 688 | no identificado · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.120 | 0.35 | no | 683 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.468 | 0.90 | no | 688 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.790 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.808 | 0.90 | no | 7 | ok · rodaje |
 
 **Concordancia: 0 de 3 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
@@ -34,7 +33,7 @@ MSH-VAR(1) sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_BAMLH0A0HYM2`. Sigma conmuta com
 | parametros | 29 |
 | AIC / BIC | 3236.0 / 3367.4 |
 | convergencia | si |
-| iteraciones | 2 |
+| iteraciones | 1 |
 
 **Cadena de Markov**
 
@@ -134,11 +133,11 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1005 | 4.40 | cola pesada | 0.105 | 2.63 |
-| ETH | 1005 | 3.74 | cola pesada | 0.262 | 2.66 |
-| BNSOL | 1005 | 6.75 | cola pesada | 0.096 | 2.54 |
-| BNB | 1005 | 4.24 | cola pesada | 0.123 | 2.64 |
-| PAXG | 1005 | 3.68 | cola pesada | 0.239 | 2.66 |
+| BTC | 1005 | 4.40 | cola pesada | 0.096 | 2.63 |
+| ETH | 1005 | 3.74 | cola pesada | 0.237 | 2.66 |
+| BNSOL | 1005 | 6.75 | cola pesada | 0.090 | 2.54 |
+| BNB | 1005 | 4.24 | cola pesada | 0.126 | 2.64 |
+| PAXG | 1005 | 3.68 | cola pesada | 0.269 | 2.66 |
 | SPYB | 8447 | 6.44 | cola pesada | 0.714 | 2.55 |
 | SMHB | 6592 | 9.45 | cola pesada | 0.429 | 2.48 |
 
@@ -184,7 +183,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-VAR**: |Sigma| ratio 114.9 (min 3), duracion 2.9d (min 5): sin regimen distinguible
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.42 vs mediana 1.30, persistencia phi=0.75
 - **cDCC**: pctl_corr=0.468 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.31, -0.26, -0.51], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.105; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.096; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
