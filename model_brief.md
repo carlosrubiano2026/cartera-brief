@@ -1,25 +1,27 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-08-28T05:12:43Z
+**Generado (UTC, ISO 8601):** 2026-08-28T13:12:00Z
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.2 meses, EN RODAJE)
+- **MS-VAR (largo)**: 2026-08-22 (0.2 meses, EN RODAJE)
 - **BVAR-SV**: 2026-08-22 (0.2 meses, EN RODAJE)
 - **cDCC**: 2026-08-23 (0.2 meses, EN RODAJE)
 - **GARCH-t**: 2026-08-23 (0.2 meses, EN RODAJE)
 
-> **EN RODAJE**: MS-VAR, BVAR-SV, cDCC, GARCH-t siguen acumulando historial (umbral 6 meses desde su propia respec_fecha). Mientras cualquiera este en rodaje, **ninguna salida informa una decision** -se registran para medir la tasa de falsos positivos antes de darles voz.
+> **EN RODAJE**: MS-VAR, MS-VAR (largo), BVAR-SV, cDCC, GARCH-t siguen acumulando historial (umbral 6 meses desde su propia respec_fecha). Mientras cualquiera este en rodaje, **ninguna salida informa una decision** -se registran para medir la tasa de falsos positivos antes de darles voz.
 
 ## Resumen
 
 | Modelo | Estadistico | Valor | Umbral | Vota | Obs | Estado |
 |---|---|---|---|---|---|---|
 | MS-VAR | frac 20d en estres | — | 0.50 | no | 689 | no identificado · rodaje |
+| MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9148 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.138 | 0.35 | no | 685 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.575 | 0.90 | no | 689 | ok · rodaje |
 | GARCH-t | extremeza BTC (2 colas) | 0.383 | 0.90 | no | 7 | ok · rodaje |
 
-**Concordancia: 0 de 3 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
+**Concordancia: 0 de 4 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
 ---
 
@@ -33,7 +35,7 @@ MSH-VAR(1) sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_BAMLH0A0HYM2`. Sigma conmuta com
 | parametros | 29 |
 | AIC / BIC | 3238.5 / 3370.0 |
 | convergencia | si |
-| iteraciones | 276 |
+| iteraciones | 1 |
 
 **Cadena de Markov**
 
@@ -61,6 +63,50 @@ Ratio |Sigma| estres/calma: **113.7x** (minimo exigido 3). Prob. suavizada del u
 | r_NASDAQ100 / d_BAMLH0A0HYM2 | -0.471 | -0.681 |
 
 La correlacion cruzada en estres es lo que un modelo univariante no puede ver, y es lo que salta en un episodio real.
+
+---
+
+## MS-VAR (largo) — regimen de comovimiento macro
+
+MSH-VAR(1) sobre `r_NASDAQCOM`, `d_VIXCLS`, `d_BAA10Y`, PANEL_LARGO (T=9148d, muestra macro sin BTC). Estimado por EM (Hamilton-Kim), no por MLE directa -ver models/msvar.py.
+
+| Ajuste | Valor |
+|---|---|
+| log-verosimilitud | -6913.3 |
+| parametros | 29 |
+| AIC / BIC | 13884.6 / 14091.1 |
+| convergencia (EM) | si |
+| iteraciones EM | 34 |
+
+**Cadena de Markov**
+
+| Regimen | p_ii | Duracion esperada | Prob. ergodica | |Sigma| |
+|---|---|---|---|---|
+| calma | 0.939 | 16.4d | 0.723 | 1.228e-04 |
+| estres | 0.841 | 6.3d | 0.277 | 4.795e-02 |
+
+**Chequeo cruzado de arranques**: dispersion de duracion **0.00% → identificado**, peor entrada de A **0.00%** (0% = las 9 entradas identicas entre los 3 arranques).
+
+
+Ratio |Sigma| estres/calma: **390.3x** (minimo 3). Duracion del regimen de estres: **6.3d** (minimo 5).
+
+**Voto de hoy (histeresis de 2d):** sin confirmar -probabilidad suavizada de hoy: 0.004. La histeresis es una capa de LECTURA sobre la probabilidad ya calculada (no cambia el filtro ni la estimacion) -motivada por que el 52.23% de las probabilidades no nitidas de este panel son tramos aislados de mediana 2 dias, no ambiguedad estructural sostenida (ver models/msvar.py).
+
+**Limitacion conocida de A (documentada, no oculta):** la entrada NASDAQCOM←BAA10Y sale con t=1.048 en el Hessiano del optimo de EM -identificada (0% de dispersion entre arranques) pero imprecisa, consistente con eficiencia de mercado a frecuencia diaria mas que con un fallo de identificacion. Verificado que no degrada la clasificacion: perturbar A a lo largo de su direccion de menor curvatura (±1 SE) cambia la probabilidad suavizada como maximo 0.033 en toda la muestra (umbral 0.05).
+
+**Desviaciones tipicas por regimen y correlaciones en estres**
+
+| Serie | sd calma | sd estres | ratio |
+|---|---|---|---|
+| r_NASDAQCOM | 0.882 | 2.365 | 2.68 |
+| d_VIXCLS | 0.829 | 2.824 | 3.41 |
+| d_BAA10Y | 0.021 | 0.047 | 2.27 |
+
+| Par | corr calma | corr estres |
+|---|---|---|
+| r_NASDAQCOM / d_VIXCLS | -0.687 | -0.704 |
+| r_NASDAQCOM / d_BAA10Y | -0.034 | -0.214 |
+| d_VIXCLS / d_BAA10Y | 0.020 | 0.196 |
 
 ---
 
@@ -183,6 +229,7 @@ Construidos por bancos centrales o academicos sobre decenas o cientos de series 
 Sin concordancia. Nada que evaluar por esta via.
 
 - **MS-VAR**: |Sigma| ratio 113.7 (min 3), duracion 2.9d (min 5): sin regimen distinguible
+- **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 390.3x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.0043, confirmado_estres_hoy=no (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.52 vs mediana 1.32, persistencia phi=0.87
 - **cDCC**: pctl_corr=0.575 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.32, -0.25, -0.51], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
 - **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.692; proxies: SPYB<-SPY, SMHB<-SMH
