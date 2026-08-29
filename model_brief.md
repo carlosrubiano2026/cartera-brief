@@ -1,6 +1,6 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-08-29T05:12:29Z
+**Generado (UTC, ISO 8601):** 2026-08-29T13:44:09Z
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.2 meses, EN RODAJE)
@@ -15,7 +15,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 
 | Modelo | Estadistico | Valor | Umbral | Vota | Obs | Estado |
 |---|---|---|---|---|---|---|
-| MS-VAR | frac 20d en estres | — | 0.50 | no | 690 | no identificado · rodaje |
+| MS-VAR | frac 20d en estres | — | 0.50 | no | 690 | retirado · rodaje |
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9149 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.079 | 0.35 | no | 686 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.619 | 0.90 | no | 690 | ok · rodaje |
@@ -27,42 +27,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 
 ## MS-VAR — regimen de comovimiento
 
-MSH-VAR(1) sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_BAMLH0A0HYM2`. Sigma conmuta como matriz.
-
-| Ajuste | Valor |
-|---|---|
-| log-verosimilitud | -1591.6 |
-| parametros | 29 |
-| AIC / BIC | 3241.2 / 3372.7 |
-| convergencia | si |
-| iteraciones | 127 |
-
-**Cadena de Markov**
-
-| Regimen | p_ii | Duracion esperada | Prob. ergodica | |Sigma| |
-|---|---|---|---|---|
-| calma | 0.925 | 13.4d | 0.823 | 6.321e-03 |
-| estres | 0.652 | 2.9d | 0.177 | 7.200e-01 |
-
-Ratio |Sigma| estres/calma: **113.9x** (minimo exigido 3). Prob. suavizada del ultimo dia: 0.018 — inestable, por eso el estadistico reportado es la fraccion de 20 dias.
-
-**Chequeo cruzado de arranques** (criterio: dispersion relativa de duracion; <10% identificado, 10-20% marginal, >20% no identificado — ver models/msvar.py): duracion 2.65d vs 2.89d (**9.2% relativo → identificado**). p11 (rango 0.622-0.654, solo de referencia, ver docstring del modulo), fun 2.3066-2.3082.
-
-**Desviaciones tipicas por regimen y correlaciones en estres**
-
-| Serie | sd calma | sd estres | ratio |
-|---|---|---|---|
-| r_BTCUSDT | 2.315 | 4.126 | 1.78 |
-| r_NASDAQ100 | 0.988 | 2.223 | 2.25 |
-| d_BAMLH0A0HYM2 | 0.041 | 0.140 | 3.38 |
-
-| Par | corr calma | corr estres |
-|---|---|---|
-| r_BTCUSDT / r_NASDAQ100 | 0.291 | 0.428 |
-| r_BTCUSDT / d_BAMLH0A0HYM2 | -0.230 | -0.340 |
-| r_NASDAQ100 / d_BAMLH0A0HYM2 | -0.473 | -0.681 |
-
-La correlacion cruzada en estres es lo que un modelo univariante no puede ver, y es lo que salta en un episodio real.
+retirado: negativo informativo -ver 'CIERRE DE PANEL_CORTO' en el docstring de models/msvar.py: cinco vias independientes (backfill de BTC a 3x la muestra sin cambio material, sustitucion del spread HY truncado por BAA10Y, cuarta serie de oro sin senal de refugio, benchmark independiente de persistencia dos ordenes de magnitud mas lento, prueba de falsacion del mecanismo de conflacion varianza/correlacion) apuntan a que el comovimiento no forma regimenes sostenidos a esta frecuencia -no es un problema de datos ni de metodo. El codigo de estimacion (models/msvar.py: fit/fit_em) sigue intacto, invocable a mano.
 
 ---
 
@@ -226,7 +191,7 @@ Construidos por bancos centrales o academicos sobre decenas o cientos de series 
 
 Sin concordancia. Nada que evaluar por esta via.
 
-- **MS-VAR**: |Sigma| ratio 113.9 (min 3), duracion 2.9d (min 5): sin regimen distinguible
+- **MS-VAR**: negativo informativo -ver 'CIERRE DE PANEL_CORTO' en el docstring de models/msvar.py: cinco vias independientes (backfill de BTC a 3x la muestra sin cambio material, sustitucion del spread HY truncado por BAA10Y, cuarta serie de oro sin senal de refugio, benchmark independiente de persistencia dos ordenes de magnitud mas lento, prueba de falsacion del mecanismo de conflacion varianza/correlacion) apuntan a que el comovimiento no forma regimenes sostenidos a esta frecuencia -no es un problema de datos ni de metodo. El codigo de estimacion (models/msvar.py: fit/fit_em) sigue intacto, invocable a mano.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 390.3x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.0115, confirmado_estres_hoy=no (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.38 vs mediana 1.33, persistencia phi=0.84
 - **cDCC**: pctl_corr=0.619 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.32, -0.24, -0.51], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
