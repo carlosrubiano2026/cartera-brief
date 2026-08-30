@@ -1,6 +1,6 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-08-30T05:02:32Z
+**Generado (UTC, ISO 8601):** 2026-08-30T11:29:21Z
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.3 meses, EN RODAJE)
@@ -87,9 +87,9 @@ VAR(1) + SV multivariante por Gibbs sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_DGS10`.
 | ESS minimo de phi | 13.4 |
 | fiabilidad de p(estres) | ok |
 
-El ESS que decide es el de sigma_T, que es la cantidad de la que sale p(estres). El bloque de parametros (mu, phi, sigma_h) mezcla peor porque phi y sigma_h estan fuertemente correlacionados a posteriori con persistencia alta: **la media de phi es fiable, su intervalo de credibilidad esta subestimado**.
+El ESS que decide es el de sigma_T, que es la cantidad de la que sale p(estres). El bloque de parametros (mu, phi, sigma_h^2) mezcla peor porque phi y sigma_h^2 estan fuertemente correlacionados a posteriori (marginal, entre barridos) con persistencia alta.
 
-**ESS(phi)=13.4 sigue por debajo de 400 (Vehtari et al. 2021), con DOS intentos de correccion probados y revertidos** (auditoria 2026-08-22 y 2026-08-23, ver docstring de models/bvarsv.py): la correccion del paso de Gibbs de B, y el interweaving ASIS (Kastner-Fruhwirth-Schnatter 2014). Ninguno mejoro el ESS sobre datos reales sin degradar otra cosa. Limitacion ABIERTA: el intervalo de credibilidad de phi/sigma_h no es fiable; el estadistico operativo (P(sigma_T>q90)) SI lo es, porque su ESS esta comodamente sobre el umbral.
+**ESS(phi)=13.4, por debajo de 400 (Vehtari et al. 2021) — limitacion CARACTERIZADA, no abierta** (auditoria 2026-08-22 a 2026-08-30, ver docstring de models/bvarsv.py: cuatro intentos de correccion probados y revertidos, mecanismo identificado, palancas restantes fuera de alcance por costo y sin justificacion -phi no alimenta ninguna decision del sistema). **Guardarraiz de publicacion: se publica la media posterior de phi, NO su intervalo de credibilidad** (tabla de abajo).
 
 
 **Volatilidad actual**
@@ -101,14 +101,15 @@ El ESS que decide es el de sigma_T, que es la cantidad de la que sale p(estres).
 | IC 90% de sigma_T | [0.95, 2.09] |
 | mediana de la trayectoria | 1.328 |
 | cociente sigma_T / mediana | 1.09 |
+| P(sigma_T > q90) +/- MCSE | 0.103 +/- 0.008 |
 
-**Proceso de log-volatilidad por ecuacion**
+**Proceso de log-volatilidad por ecuacion** (solo media posterior de phi -sin IC, ver guardarraiz arriba)
 
-| Serie | phi (persistencia) | sd | IC 90% | sigma_h | ESS |
-|---|---|---|---|---|---|
-| r_BTCUSDT | 0.877 | 0.057 | [0.76, 0.95] | 0.090 | 15 |
-| r_NASDAQ100 | 0.949 | 0.022 | [0.91, 0.98] | 0.057 | 27 |
-| d_DGS10 | 0.952 | 0.028 | [0.90, 0.99] | 0.019 | 13 |
+| Serie | phi (persistencia, media) | sigma_h^2 | ESS de phi |
+|---|---|---|---|
+| r_BTCUSDT | 0.877 | 0.090 | 15 |
+| r_NASDAQ100 | 0.949 | 0.057 | 27 |
+| d_DGS10 | 0.952 | 0.019 | 13 |
 
 En datos financieros reales phi debe salir entre 0.9 y 0.99. Cerca de cero significa que la cadena no ha convergido o que no hay agrupamiento de volatilidad.
 
