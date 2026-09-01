@@ -1,6 +1,6 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-09-01T14:38:45Z
+**Generado (UTC, ISO 8601):** 2026-09-01T14:45:04Z
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.3 meses, EN RODAJE)
@@ -20,7 +20,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9150 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.074 | 0.35 | no | 687 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.589 | 0.90 | no | 691 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.032 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.046 | 0.90 | no | 7 | ok · rodaje |
 | Growth-at-Risk | P(crecimiento PIB<0, h=4) — NO prob. de regimen | 0.021 | — | no (mensual, no vota) | 218 | ok · rodaje |
 
 **Concordancia: 0 de 4 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|, y P(crecimiento<0) de Growth-at-Risk es la probabilidad de un evento macro a un anio vista -no de un regimen de mercado hoy, y ni siquiera vota-: no compares las cifras entre si.
@@ -147,11 +147,11 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1011 | 4.36 | cola pesada | 0.484 | 2.63 |
-| ETH | 1011 | 3.73 | cola pesada | 0.411 | 2.66 |
-| BNSOL | 1011 | 6.78 | cola pesada | 0.408 | 2.54 |
-| BNB | 1011 | 4.22 | cola pesada | 0.451 | 2.64 |
-| PAXG | 1011 | 3.68 | cola pesada | 0.103 | 2.66 |
+| BTC | 1011 | 4.36 | cola pesada | 0.477 | 2.63 |
+| ETH | 1011 | 3.73 | cola pesada | 0.402 | 2.66 |
+| BNSOL | 1011 | 6.78 | cola pesada | 0.411 | 2.54 |
+| BNB | 1011 | 4.22 | cola pesada | 0.453 | 2.64 |
+| PAXG | 1011 | 3.68 | cola pesada | 0.086 | 2.66 |
 | SPYB | 0 | — | **historia insuficiente** | — | — |
 | SMHB | 0 | — | **historia insuficiente** | — | — |
 
@@ -280,7 +280,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 389.8x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.1018, confirmado_estres_hoy=no (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.33 vs mediana 1.32, persistencia phi=0.86
 - **cDCC**: pctl_corr=0.589 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.32, -0.24, -0.52], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.484 — historia insuficiente: SPYB, SMHB
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.477 — historia insuficiente: SPYB, SMHB
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
