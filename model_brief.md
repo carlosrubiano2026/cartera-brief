@@ -1,13 +1,13 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-09-05T05:02:51Z
+**Generado (UTC, ISO 8601):** 2026-09-06T05:02:36Z
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.5 meses, EN RODAJE)
 - **MS-VAR (largo)**: 2026-08-22 (0.5 meses, EN RODAJE)
 - **BVAR-SV**: 2026-08-22 (0.5 meses, EN RODAJE)
-- **cDCC**: 2026-08-23 (0.4 meses, EN RODAJE)
-- **GARCH-t**: 2026-08-23 (0.4 meses, EN RODAJE)
+- **cDCC**: 2026-08-23 (0.5 meses, EN RODAJE)
+- **GARCH-t**: 2026-08-23 (0.5 meses, EN RODAJE)
 
 > **EN RODAJE**: MS-VAR, MS-VAR (largo), BVAR-SV, cDCC, GARCH-t siguen acumulando historial (umbral 6 meses desde su propia respec_fecha). Mientras cualquiera este en rodaje, **ninguna salida informa una decision** -se registran para medir la tasa de falsos positivos antes de darles voz.
 
@@ -17,9 +17,9 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 |---|---|---|---|---|---|---|
 | MS-VAR | frac 20d en estres | — | 0.50 | no | 695 | retirado · rodaje |
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9154 | ok · rodaje |
-| BVAR-SV | P(sigma_T > q90) | 0.026 | 0.35 | no | 691 | ok · rodaje |
+| BVAR-SV | P(sigma_T > q90) | 0.025 | 0.35 | no | 691 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.540 | 0.90 | no | 695 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.689 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.164 | 0.90 | no | 7 | ok · rodaje |
 
 **Concordancia: 0 de 4 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
@@ -83,33 +83,33 @@ VAR(1) + SV multivariante por Gibbs sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_DGS10`.
 |---|---|
 | extracciones retenidas | 1800 |
 | muestreo de la trayectoria | Kim-Shephard + FFBS (extraccion exacta) |
-| ESS de sigma_T | 563.9 |
-| ESS minimo de phi | 12.0 |
+| ESS de sigma_T | 601.8 |
+| ESS minimo de phi | 11.2 |
 | fiabilidad de p(estres) | ok |
 
 El ESS que decide es el de sigma_T, que es la cantidad de la que sale p(estres). El bloque de parametros (mu, phi, sigma_h^2) mezcla peor porque phi y sigma_h^2 estan fuertemente correlacionados a posteriori (marginal, entre barridos) con persistencia alta.
 
-**ESS(phi)=12.0, por debajo de 400 (Vehtari et al. 2021) — limitacion CARACTERIZADA, no abierta** (auditoria 2026-08-22 a 2026-08-30, ver docstring de models/bvarsv.py: cuatro intentos de correccion probados y revertidos, mecanismo identificado, palancas restantes fuera de alcance por costo y sin justificacion -phi no alimenta ninguna decision del sistema). **Guardarraiz de publicacion: se publica la media posterior de phi, NO su intervalo de credibilidad** (tabla de abajo).
+**ESS(phi)=11.2, por debajo de 400 (Vehtari et al. 2021) — limitacion CARACTERIZADA, no abierta** (auditoria 2026-08-22 a 2026-08-30, ver docstring de models/bvarsv.py: cuatro intentos de correccion probados y revertidos, mecanismo identificado, palancas restantes fuera de alcance por costo y sin justificacion -phi no alimenta ninguna decision del sistema). **Guardarraiz de publicacion: se publica la media posterior de phi, NO su intervalo de credibilidad** (tabla de abajo).
 
 
 **Volatilidad actual**
 
 | Medida | Valor |
 |---|---|
-| sigma_T (media posterior) | 1.149 |
-| sd posterior de sigma_T | 0.312 |
-| IC 90% de sigma_T | [0.70, 1.75] |
+| sigma_T (media posterior) | 1.166 |
+| sd posterior de sigma_T | 0.316 |
+| IC 90% de sigma_T | [0.73, 1.76] |
 | mediana de la trayectoria | 1.330 |
-| cociente sigma_T / mediana | 0.86 |
-| P(sigma_T > q90) +/- MCSE | 0.026 +/- 0.005 |
+| cociente sigma_T / mediana | 0.88 |
+| P(sigma_T > q90) +/- MCSE | 0.025 +/- 0.004 |
 
 **Proceso de log-volatilidad por ecuacion** (solo media posterior de phi -sin IC, ver guardarraiz arriba)
 
 | Serie | phi (persistencia, media) | sigma_h^2 | ESS de phi |
 |---|---|---|---|
-| r_BTCUSDT | 0.897 | 0.076 | 13 |
-| r_NASDAQ100 | 0.950 | 0.053 | 48 |
-| d_DGS10 | 0.941 | 0.024 | 12 |
+| r_BTCUSDT | 0.901 | 0.073 | 12 |
+| r_NASDAQ100 | 0.961 | 0.038 | 60 |
+| d_DGS10 | 0.949 | 0.023 | 11 |
 
 En datos financieros reales phi debe salir entre 0.9 y 0.99. Cerca de cero significa que la cadena no ha convergido o que no hay agrupamiento de volatilidad.
 
@@ -145,11 +145,11 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1015 | 4.38 | cola pesada | 0.155 | 2.63 |
-| ETH | 1015 | 3.74 | cola pesada | 0.176 | 2.66 |
-| BNSOL | 1015 | 6.77 | cola pesada | 0.259 | 2.54 |
-| BNB | 1015 | 4.21 | cola pesada | 0.356 | 2.64 |
-| PAXG | 1015 | 3.69 | cola pesada | 0.176 | 2.66 |
+| BTC | 1016 | 4.37 | cola pesada | 0.582 | 2.63 |
+| ETH | 1016 | 3.75 | cola pesada | 0.810 | 2.66 |
+| BNSOL | 1016 | 6.81 | cola pesada | 0.879 | 2.54 |
+| BNB | 1016 | 4.22 | cola pesada | 0.984 | 2.64 |
+| PAXG | 1016 | 3.68 | cola pesada | 0.466 | 2.66 |
 | SPYB | 8454 | 6.44 | cola pesada | 0.119 | 2.55 |
 | SMHB | 6599 | 9.47 | cola pesada | 0.184 | 2.48 |
 
@@ -188,9 +188,9 @@ Sin concordancia. Nada que evaluar por esta via.
 
 - **MS-VAR**: negativo informativo -ver 'CIERRE DE PANEL_CORTO' en el docstring de models/msvar.py: cinco vias independientes (backfill de BTC a 3x la muestra sin cambio material, sustitucion del spread HY truncado por BAA10Y, cuarta serie de oro sin senal de refugio, benchmark independiente de persistencia dos ordenes de magnitud mas lento, prueba de falsacion del mecanismo de conflacion varianza/correlacion) apuntan a que el comovimiento no forma regimenes sostenidos a esta frecuencia -no es un problema de datos ni de metodo. El codigo de estimacion (models/msvar.py: fit/fit_em) sigue intacto, invocable a mano.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 389.7x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.0090, confirmado_estres_hoy=no (2d consecutivos).
-- **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.15 vs mediana 1.33, persistencia phi=0.90
+- **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.17 vs mediana 1.33, persistencia phi=0.90
 - **cDCC**: pctl_corr=0.540 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.31, -0.25, -0.51], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.155; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.582; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
