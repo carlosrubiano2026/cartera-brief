@@ -1,6 +1,6 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-09-06T05:02:36Z
+**Generado (UTC, ISO 8601):** 2026-09-07T05:02:16Z
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (0.5 meses, EN RODAJE)
@@ -19,7 +19,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9154 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.025 | 0.35 | no | 691 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.540 | 0.90 | no | 695 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.164 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.121 | 0.90 | no | 7 | ok · rodaje |
 
 **Concordancia: 0 de 4 modelos operativos.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
@@ -145,11 +145,11 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1016 | 4.37 | cola pesada | 0.582 | 2.63 |
-| ETH | 1016 | 3.75 | cola pesada | 0.810 | 2.66 |
-| BNSOL | 1016 | 6.81 | cola pesada | 0.879 | 2.54 |
-| BNB | 1016 | 4.22 | cola pesada | 0.984 | 2.64 |
-| PAXG | 1016 | 3.68 | cola pesada | 0.466 | 2.66 |
+| BTC | 1017 | 4.36 | cola pesada | 0.440 | 2.64 |
+| ETH | 1017 | 3.74 | cola pesada | 0.448 | 2.66 |
+| BNSOL | 1017 | 6.78 | cola pesada | 0.409 | 2.54 |
+| BNB | 1017 | 4.22 | cola pesada | 0.177 | 2.64 |
+| PAXG | 1017 | 3.68 | cola pesada | 0.208 | 2.66 |
 | SPYB | 8454 | 6.44 | cola pesada | 0.119 | 2.55 |
 | SMHB | 6599 | 9.47 | cola pesada | 0.184 | 2.48 |
 
@@ -190,7 +190,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 389.7x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.0090, confirmado_estres_hoy=no (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.17 vs mediana 1.33, persistencia phi=0.90
 - **cDCC**: pctl_corr=0.540 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.31, -0.25, -0.51], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.582; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.440; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
