@@ -1,18 +1,18 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-09-12T05:03:11Z
+**Generado (UTC, ISO 8601):** 2026-09-13T05:02:43Z
 
 ## Frescura de los datos
 
-- **MS-VAR**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **MS-VAR (largo)**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **BVAR-SV**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **cDCC**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **GARCH-t**: input mas viejo hace 1 dia(s) (fuente: yahoo).
+- **MS-VAR**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **MS-VAR (largo)**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **BVAR-SV**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **cDCC**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **GARCH-t**: input mas viejo hace 2 dia(s) (fuente: yahoo).
 - fuente **binance** (mejor caso): 0 dia(s).
-- fuente **fred** (mejor caso): 1 dia(s).
-- fuente **yahoo** (mejor caso): 1 dia(s).
-- fuente **indices_lectura** (mejor caso): 2 dia(s).
+- fuente **fred** (mejor caso): 2 dia(s).
+- fuente **yahoo** (mejor caso): 2 dia(s).
+- fuente **indices_lectura** (mejor caso): 3 dia(s).
 
 **IMPORTANTE**: la frescura de arriba es POR FUENTE/MODELO, no del panel entero -una fila de hoy de Binance (cotiza 24/7) no implica que las series macro de un modelo esten al dia. Ver `output/model_results.json` (`fuentes`/`modelos.*.frescura_input`) para el detalle completo por serie.
 
@@ -33,7 +33,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9158 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.023 | 0.35 | no | 695 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.700 | 0.90 | no | 699 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.035 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.043 | 0.90 | no | 7 | ok · rodaje |
 
 **Concordancia: 0 de 4 modelos evaluables.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
@@ -159,11 +159,11 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1022 | 4.35 | cola pesada | 0.517 | 2.64 |
-| ETH | 1022 | 3.73 | cola pesada | 0.819 | 2.66 |
-| BNSOL | 1022 | 6.77 | cola pesada | 0.742 | 2.54 |
-| BNB | 1022 | 4.22 | cola pesada | 0.843 | 2.64 |
-| PAXG | 1022 | 3.69 | cola pesada | 0.602 | 2.66 |
+| BTC | 1023 | 4.34 | cola pesada | 0.478 | 2.64 |
+| ETH | 1023 | 3.73 | cola pesada | 0.550 | 2.66 |
+| BNSOL | 1023 | 6.75 | cola pesada | 0.509 | 2.54 |
+| BNB | 1023 | 4.21 | cola pesada | 0.295 | 2.64 |
+| PAXG | 1023 | 3.68 | cola pesada | 0.487 | 2.66 |
 | SPYB | 8461 | 6.45 | cola pesada | 0.906 | 2.55 |
 | SMHB | 6606 | 9.46 | cola pesada | 0.760 | 2.48 |
 
@@ -204,7 +204,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 389.7x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.0646, confirmado_estres_hoy=no (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.16 vs mediana 1.32, persistencia phi=0.89
 - **cDCC**: pctl_corr=0.700 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.31, -0.23, -0.51], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.517; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.478; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
