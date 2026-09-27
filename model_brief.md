@@ -1,26 +1,26 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-09-26T05:03:13Z
-**Caducidad (UTC, ISO 8601):** 2026-09-27T17:03:13Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
+**Generado (UTC, ISO 8601):** 2026-09-27T06:10:39Z
+**Caducidad (UTC, ISO 8601):** 2026-09-28T18:10:39Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
 
 ## Frescura de los datos
 
-- **MS-VAR**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **MS-VAR (largo)**: input mas viejo hace 4 dia(s) (fuente: fred).
-- **BVAR-SV**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **cDCC**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **GARCH-t**: input mas viejo hace 1 dia(s) (fuente: yahoo).
+- **MS-VAR**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **MS-VAR (largo)**: input mas viejo hace 5 dia(s) (fuente: fred).
+- **BVAR-SV**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **cDCC**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **GARCH-t**: input mas viejo hace 2 dia(s) (fuente: yahoo).
 - fuente **binance** (mejor caso): 0 dia(s).
-- fuente **fred** (mejor caso): 1 dia(s).
-- fuente **yahoo** (mejor caso): 1 dia(s).
-- fuente **indices_lectura** (mejor caso): 2 dia(s).
+- fuente **fred** (mejor caso): 2 dia(s).
+- fuente **yahoo** (mejor caso): 2 dia(s).
+- fuente **indices_lectura** (mejor caso): 3 dia(s).
 
 **IMPORTANTE**: la frescura de arriba es POR FUENTE/MODELO, no del panel entero -una fila de hoy de Binance (cotiza 24/7) no implica que las series macro de un modelo esten al dia. Ver `output/model_results.json` (`fuentes`/`modelos.*.frescura_input`) para el detalle completo por serie.
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
-- **MS-VAR**: 2026-08-22 (1.1 meses, EN RODAJE)
-- **MS-VAR (largo)**: 2026-08-22 (1.1 meses, EN RODAJE)
-- **BVAR-SV**: 2026-08-22 (1.1 meses, EN RODAJE)
+- **MS-VAR**: 2026-08-22 (1.2 meses, EN RODAJE)
+- **MS-VAR (largo)**: 2026-08-22 (1.2 meses, EN RODAJE)
+- **BVAR-SV**: 2026-08-22 (1.2 meses, EN RODAJE)
 - **cDCC**: 2026-08-23 (1.1 meses, EN RODAJE)
 - **GARCH-t**: 2026-08-23 (1.1 meses, EN RODAJE)
 
@@ -34,7 +34,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9166 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.121 | 0.35 | no | 705 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.929 | 0.90 | SI | 709 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.147 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.148 | 0.90 | no | 7 | ok · rodaje |
 
 **Concordancia: 1 de 4 modelos evaluables.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
@@ -160,11 +160,11 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1036 | 4.35 | cola pesada | 0.426 | 2.64 |
-| ETH | 1036 | 3.75 | cola pesada | 0.557 | 2.66 |
-| BNSOL | 1036 | 6.93 | cola pesada | 0.859 | 2.54 |
-| BNB | 1036 | 4.22 | cola pesada | 0.504 | 2.64 |
-| PAXG | 1036 | 3.67 | cola pesada | 0.748 | 2.66 |
+| BTC | 1037 | 4.34 | cola pesada | 0.574 | 2.64 |
+| ETH | 1037 | 3.74 | cola pesada | 0.512 | 2.66 |
+| BNSOL | 1037 | 6.91 | cola pesada | 0.434 | 2.54 |
+| BNB | 1037 | 4.21 | cola pesada | 0.372 | 2.64 |
+| PAXG | 1037 | 3.66 | cola pesada | 0.402 | 2.66 |
 | SPYB | 8471 | 6.45 | cola pesada | 0.778 | 2.55 |
 | SMHB | 6616 | 9.47 | cola pesada | 0.680 | 2.48 |
 
@@ -205,7 +205,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 388.5x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.0551, confirmado_estres_hoy=no (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.47 vs mediana 1.32, persistencia phi=0.90
 - **cDCC**: pctl_corr=0.929 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.3, -0.18, -0.5], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.426; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.574; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
