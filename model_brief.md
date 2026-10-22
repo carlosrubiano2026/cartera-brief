@@ -1,15 +1,15 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-10-21T05:03:16Z
-**Caducidad (UTC, ISO 8601):** 2026-10-22T17:03:17Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
+**Generado (UTC, ISO 8601):** 2026-10-22T05:03:20Z
+**Caducidad (UTC, ISO 8601):** 2026-10-23T17:03:20Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
 
 ## Frescura de los datos
 
-- **MS-VAR**: input mas viejo hace 8 dia(s) (fuente: fred).
+- **MS-VAR**: input mas viejo hace 7 dia(s) (fuente: fred).
 - **MS-VAR (largo)**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **BVAR-SV**: input mas viejo hace 6 dia(s) (fuente: fred).
-- **cDCC**: input mas viejo hace 8 dia(s) (fuente: fred).
-- **GARCH-t**: input mas viejo hace 6 dia(s) (fuente: yahoo).
+- **BVAR-SV**: input mas viejo hace 7 dia(s) (fuente: fred).
+- **cDCC**: input mas viejo hace 7 dia(s) (fuente: fred).
+- **GARCH-t**: input mas viejo hace 1 dia(s) (fuente: yahoo).
 - fuente **binance** (mejor caso): 0 dia(s).
 - fuente **fred** (mejor caso): 1 dia(s).
 - fuente **yahoo** (mejor caso): 1 dia(s).
@@ -21,14 +21,14 @@
 
 Fuente: API de Binance (src/collect_binance.py), NO portafolio.md. Solo porcentajes: este brief es publico y no publica cantidades, precios ni valores en USD.
 
-**Capturado (UTC):** 2026-10-21T05:00:10Z -- hace 0.1 h. **Caducidad de estos pesos (UTC):** 2026-10-22T17:00:10Z (TTL del brief, contado desde la captura).
+**Capturado (UTC):** 2026-10-22T05:00:24Z -- hace 0.0 h. **Caducidad de estos pesos (UTC):** 2026-10-23T17:00:24Z (TTL del brief, contado desde la captura).
 
 | Posicion | Peso real | Peso objetivo | Desviacion |
 |---|---|---|---|
-| BTC | 16.5% | 24.0% | -7.5pp |
+| BTC | 16.6% | 24.0% | -7.4pp |
 | SPYB | 24.7% | 20.0% | +4.7pp |
 | ETH | 9.1% | 15.0% | -5.9pp |
-| SMHB | 15.5% | 10.0% | +5.5pp |
+| SMHB | 15.2% | 10.0% | +5.2pp |
 | BNSOL | 6.6% | 10.0% | -3.4pp |
 | BNB | 5.2% | 10.0% | -4.8pp |
 | PAXG | 22.4% | 10.0% | +12.4pp |
@@ -39,8 +39,8 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 - **MS-VAR**: 2026-08-22 (2.0 meses, EN RODAJE)
 - **MS-VAR (largo)**: 2026-08-22 (2.0 meses, EN RODAJE)
 - **BVAR-SV**: 2026-08-22 (2.0 meses, EN RODAJE)
-- **cDCC**: 2026-08-23 (1.9 meses, EN RODAJE)
-- **GARCH-t**: 2026-08-23 (1.9 meses, EN RODAJE)
+- **cDCC**: 2026-08-23 (2.0 meses, EN RODAJE)
+- **GARCH-t**: 2026-08-23 (2.0 meses, EN RODAJE)
 
 > **EN RODAJE**: MS-VAR, MS-VAR (largo), BVAR-SV, cDCC, GARCH-t siguen acumulando historial (umbral 6 meses desde su propia respec_fecha). Mientras cualquiera este en rodaje, **ninguna salida informa una decision** -se registran para medir la tasa de falsos positivos antes de darles voz.
 
@@ -48,13 +48,13 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 
 | Modelo | Estadistico | Valor | Umbral | Vota | Obs | Estado |
 |---|---|---|---|---|---|---|
-| MS-VAR | frac 20d en estres | — | 0.50 | no | 721 | retirado · rodaje |
-| MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9184 | ok · rodaje |
+| MS-VAR | frac 20d en estres | — | 0.50 | no | 723 | retirado · rodaje |
+| MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9185 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.024 | 0.35 | no | 718 | ok · rodaje |
-| cDCC | pctl_corr (NO prob.) | 0.922 | 0.90 | SI | 721 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.604 | 0.90 | no | 7 | ok · rodaje |
+| cDCC | pctl_corr (NO prob.) | 0.862 | 0.90 | no | 723 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.029 | 0.90 | no | 7 | ok · rodaje |
 
-**Concordancia: 1 de 4 modelos evaluables.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
+**Concordancia: 0 de 4 modelos evaluables.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
 ---
 
@@ -66,29 +66,29 @@ retirado: negativo informativo -ver 'CIERRE DE PANEL_CORTO' en el docstring de m
 
 ## MS-VAR (largo) — regimen de comovimiento macro
 
-MSH-VAR(1) sobre `r_NASDAQCOM`, `d_VIXCLS`, `d_BAA10Y`, PANEL_LARGO (T=9184d, muestra macro sin BTC). Estimado por EM (Hamilton-Kim), no por MLE directa -ver models/msvar.py.
+MSH-VAR(1) sobre `r_NASDAQCOM`, `d_VIXCLS`, `d_BAA10Y`, PANEL_LARGO (T=9185d, muestra macro sin BTC). Estimado por EM (Hamilton-Kim), no por MLE directa -ver models/msvar.py.
 
 | Ajuste | Valor |
 |---|---|
-| log-verosimilitud | -6920.7 |
+| log-verosimilitud | -6921.7 |
 | parametros | 29 |
-| AIC / BIC | 13899.4 / 14106.0 |
+| AIC / BIC | 13901.5 / 14108.1 |
 | convergencia (EM) | si |
-| iteraciones EM | 32 |
+| iteraciones EM | 34 |
 
 **Cadena de Markov**
 
 | Regimen | p_ii | Duracion esperada | Prob. ergodica | |Sigma| |
 |---|---|---|---|---|
-| calma | 0.939 | 16.5d | 0.724 | 1.236e-04 |
-| estres | 0.841 | 6.3d | 0.276 | 4.803e-02 |
+| calma | 0.939 | 16.5d | 0.724 | 1.237e-04 |
+| estres | 0.841 | 6.3d | 0.276 | 4.806e-02 |
 
 **Chequeo cruzado de arranques**: dispersion de duracion **0.00% → identificado**, peor entrada de A **0.00%** (0% = las 9 entradas identicas entre los 3 arranques).
 
 
 Ratio |Sigma| estres/calma: **388.4x** (minimo 3). Duracion del regimen de estres: **6.3d** (minimo 5).
 
-**Voto de hoy (histeresis de 2d):** sin confirmar -probabilidad suavizada de hoy: 0.354. La histeresis es una capa de LECTURA sobre la probabilidad ya calculada (no cambia el filtro ni la estimacion) -motivada por que el 52.23% de las probabilidades no nitidas de este panel son tramos aislados de mediana 2 dias, no ambiguedad estructural sostenida (ver models/msvar.py).
+**Voto de hoy (histeresis de 2d):** sin confirmar -probabilidad suavizada de hoy: 0.205. La histeresis es una capa de LECTURA sobre la probabilidad ya calculada (no cambia el filtro ni la estimacion) -motivada por que el 52.23% de las probabilidades no nitidas de este panel son tramos aislados de mediana 2 dias, no ambiguedad estructural sostenida (ver models/msvar.py).
 
 **Limitacion conocida de A (documentada, no oculta):** la entrada NASDAQCOM←BAA10Y sale con t=1.048 en el Hessiano del optimo de EM -identificada (0% de dispersion entre arranques) pero imprecisa, consistente con eficiencia de mercado a frecuencia diaria mas que con un fallo de identificacion. Verificado que no degrada la clasificacion: perturbar A a lo largo de su direccion de menor curvatura (±1 SE) cambia la probabilidad suavizada como maximo 0.033 en toda la muestra (umbral 0.05).
 
@@ -97,12 +97,12 @@ Ratio |Sigma| estres/calma: **388.4x** (minimo 3). Duracion del regimen de estre
 | Serie | sd calma | sd estres | ratio |
 |---|---|---|---|
 | r_NASDAQCOM | 0.882 | 2.366 | 2.68 |
-| d_VIXCLS | 0.830 | 2.825 | 3.40 |
+| d_VIXCLS | 0.831 | 2.826 | 3.40 |
 | d_BAA10Y | 0.021 | 0.047 | 2.27 |
 
 | Par | corr calma | corr estres |
 |---|---|---|
-| r_NASDAQCOM / d_VIXCLS | -0.688 | -0.704 |
+| r_NASDAQCOM / d_VIXCLS | -0.687 | -0.704 |
 | r_NASDAQCOM / d_BAA10Y | -0.032 | -0.215 |
 | d_VIXCLS / d_BAA10Y | 0.018 | 0.197 |
 
@@ -154,9 +154,9 @@ cDCC (Aielli 2013) sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_BAMLH0A0HYM2`. `pctl_cor
 
 | Diagnostico | Valor |
 |---|---|
-| pctl_corr (hoy) | 0.922 |
-| rho_avg (hoy) | -0.123 |
-| rho_avg (mediana historica) | -0.147 |
+| pctl_corr (hoy) | 0.862 |
+| rho_avg (hoy) | -0.131 |
+| rho_avg (mediana historica) | -0.148 |
 | persistencia_dcc (a+b) | 0.991 |
 | convergio | si |
 
@@ -166,9 +166,9 @@ cDCC (Aielli 2013) sobre `r_BTCUSDT`, `r_NASDAQ100`, `d_BAMLH0A0HYM2`. `pctl_cor
 
 | Par | rho_hoy |
 |---|---|
-| r_BTCUSDT / r_NASDAQ100 | 0.317 |
+| r_BTCUSDT / r_NASDAQ100 | 0.309 |
 | r_BTCUSDT / d_BAMLH0A0HYM2 | -0.212 |
-| r_NASDAQ100 / d_BAMLH0A0HYM2 | -0.473 |
+| r_NASDAQ100 / d_BAMLH0A0HYM2 | -0.490 |
 
 ---
 
@@ -178,13 +178,13 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1055 | 4.34 | cola pesada | 0.802 | 2.64 |
-| ETH | 1055 | 3.75 | cola pesada | 0.819 | 2.66 |
-| BNSOL | 1055 | 6.94 | cola pesada | 0.726 | 2.54 |
-| BNB | 1055 | 4.26 | cola pesada | 0.898 | 2.64 |
-| PAXG | 1055 | 3.60 | cola pesada | 0.158 | 2.66 |
-| SPYB | 8488 | 6.46 | cola pesada | 0.688 | 2.55 |
-| SMHB | 6633 | 9.47 | cola pesada | 0.414 | 2.48 |
+| BTC | 1056 | 4.34 | cola pesada | 0.514 | 2.64 |
+| ETH | 1056 | 3.74 | cola pesada | 0.521 | 2.66 |
+| BNSOL | 1056 | 6.91 | cola pesada | 0.459 | 2.54 |
+| BNB | 1056 | 4.25 | cola pesada | 0.433 | 2.64 |
+| PAXG | 1056 | 3.60 | cola pesada | 0.170 | 2.66 |
+| SPYB | 8489 | 6.46 | cola pesada | 0.791 | 2.55 |
+| SMHB | 6634 | 9.48 | cola pesada | 0.832 | 2.48 |
 
 `hoy_percentil` es donde cae el retorno de HOY en la distribucion t ajustada (0.5=mediana, cerca de 0 o 1=movimiento extremo). `nu` por encima de ~10 se reporta como categoria ("cola moderada o gaussiana"), no como numero puntual -la informacion de Fisher sobre nu decae ahi y el valor exacto deja de ser fiable, aunque el VaR/ES que se deriva de el casi no cambia en esa zona.
 
@@ -198,10 +198,10 @@ Construidos por bancos centrales o academicos sobre decenas o cientos de series 
 
 | Indice | Fecha | Valor | Percentil hist. | Cambio 7d | N obs |
 |---|---|---|---|---|---|
-| NFCI | 2026-10-09 | -0.499 | 39% | 0.008 | 2910 |
-| ANFCI | 2026-10-09 | -0.485 | 40% | 0.012 | 2910 |
+| NFCI | 2026-10-16 | -0.496 | 40% | 0.006 | 2911 |
+| ANFCI | 2026-10-16 | -0.518 | 36% | 0.006 | 2911 |
 | STLFSI4 | 2026-10-09 | -0.721 | 13% | -0.253 | 1711 |
-| CISS (BCE) | 2026-10-19 | 0.010 | 11% | -0.003 | 7260 |
+| CISS (BCE) | 2026-10-20 | 0.010 | 12% | -0.001 | 7261 |
 
 **Mensuales** (cambio vs. ~30 dias antes)
 
@@ -220,10 +220,10 @@ Construidos por bancos centrales o academicos sobre decenas o cientos de series 
 Sin concordancia. Nada que evaluar por esta via.
 
 - **MS-VAR**: negativo informativo -ver 'CIERRE DE PANEL_CORTO' en el docstring de models/msvar.py: cinco vias independientes (backfill de BTC a 3x la muestra sin cambio material, sustitucion del spread HY truncado por BAA10Y, cuarta serie de oro sin senal de refugio, benchmark independiente de persistencia dos ordenes de magnitud mas lento, prueba de falsacion del mecanismo de conflacion varianza/correlacion) apuntan a que el comovimiento no forma regimenes sostenidos a esta frecuencia -no es un problema de datos ni de metodo. El codigo de estimacion (models/msvar.py: fit/fit_em) sigue intacto, invocable a mano.
-- **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 388.4x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.3535, confirmado_estres_hoy=no (2d consecutivos).
+- **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 388.4x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.2048, confirmado_estres_hoy=no (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.13 vs mediana 1.30, persistencia phi=0.89
-- **cDCC**: pctl_corr=0.922 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.32, -0.21, -0.47], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.802; proxies: SPYB<-SPY, SMHB<-SMH
+- **cDCC**: pctl_corr=0.862 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.31, -0.21, -0.49], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.514; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
