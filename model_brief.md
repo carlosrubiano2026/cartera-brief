@@ -1,19 +1,19 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-10-25T06:03:56Z
-**Caducidad (UTC, ISO 8601):** 2026-10-26T18:03:56Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
+**Generado (UTC, ISO 8601):** 2026-10-26T06:03:02Z
+**Caducidad (UTC, ISO 8601):** 2026-10-27T18:03:02Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
 
 ## Frescura de los datos
 
-- **MS-VAR**: input mas viejo hace 3 dia(s) (fuente: fred).
-- **MS-VAR (largo)**: input mas viejo hace 3 dia(s) (fuente: fred).
-- **BVAR-SV**: input mas viejo hace 3 dia(s) (fuente: fred).
-- **cDCC**: input mas viejo hace 3 dia(s) (fuente: fred).
-- **GARCH-t**: input mas viejo hace 2 dia(s) (fuente: yahoo).
+- **MS-VAR**: input mas viejo hace 4 dia(s) (fuente: fred).
+- **MS-VAR (largo)**: input mas viejo hace 4 dia(s) (fuente: fred).
+- **BVAR-SV**: input mas viejo hace 4 dia(s) (fuente: fred).
+- **cDCC**: input mas viejo hace 4 dia(s) (fuente: fred).
+- **GARCH-t**: input mas viejo hace 3 dia(s) (fuente: yahoo).
 - fuente **binance** (mejor caso): 0 dia(s).
-- fuente **fred** (mejor caso): 2 dia(s).
-- fuente **yahoo** (mejor caso): 2 dia(s).
-- fuente **indices_lectura** (mejor caso): 3 dia(s).
+- fuente **fred** (mejor caso): 3 dia(s).
+- fuente **yahoo** (mejor caso): 3 dia(s).
+- fuente **indices_lectura** (mejor caso): 4 dia(s).
 
 **IMPORTANTE**: la frescura de arriba es POR FUENTE/MODELO, no del panel entero -una fila de hoy de Binance (cotiza 24/7) no implica que las series macro de un modelo esten al dia. Ver `output/model_results.json` (`fuentes`/`modelos.*.frescura_input`) para el detalle completo por serie.
 
@@ -21,17 +21,17 @@
 
 Fuente: API de Binance (src/collect_binance.py), NO portafolio.md. Solo porcentajes: este brief es publico y no publica cantidades, precios ni valores en USD.
 
-**Capturado (UTC):** 2026-10-25T06:00:06Z -- hace 0.1 h. **Caducidad de estos pesos (UTC):** 2026-10-26T18:00:06Z (TTL del brief, contado desde la captura).
+**Capturado (UTC):** 2026-10-26T06:00:10Z -- hace 0.0 h. **Caducidad de estos pesos (UTC):** 2026-10-27T18:00:10Z (TTL del brief, contado desde la captura).
 
 | Posicion | Peso real | Peso objetivo | Desviacion |
 |---|---|---|---|
-| BTC | 16.5% | 24.0% | -7.5pp |
+| BTC | 16.4% | 24.0% | -7.6pp |
 | SPYB | 25.1% | 20.0% | +5.1pp |
-| ETH | 9.0% | 15.0% | -6.0pp |
-| SMHB | 15.1% | 10.0% | +5.1pp |
+| ETH | 8.9% | 15.0% | -6.1pp |
+| SMHB | 15.2% | 10.0% | +5.2pp |
 | BNSOL | 6.5% | 10.0% | -3.5pp |
 | BNB | 5.3% | 10.0% | -4.7pp |
-| PAXG | 22.3% | 10.0% | +12.3pp |
+| PAXG | 22.5% | 10.0% | +12.5pp |
 
 Resto no declarado (p.ej. USDT): 0.1%.
 
@@ -52,7 +52,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9187 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.008 | 0.35 | no | 720 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.851 | 0.90 | no | 725 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.214 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.278 | 0.90 | no | 7 | ok · rodaje |
 
 **Concordancia: 0 de 4 modelos evaluables.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
@@ -178,11 +178,11 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1059 | 4.34 | cola pesada | 0.393 | 2.64 |
-| ETH | 1059 | 3.74 | cola pesada | 0.294 | 2.66 |
-| BNSOL | 1059 | 6.87 | cola pesada | 0.389 | 2.54 |
-| BNB | 1059 | 4.22 | cola pesada | 0.595 | 2.64 |
-| PAXG | 1059 | 3.58 | cola pesada | 0.388 | 2.66 |
+| BTC | 1060 | 4.33 | cola pesada | 0.361 | 2.64 |
+| ETH | 1060 | 3.74 | cola pesada | 0.307 | 2.66 |
+| BNSOL | 1060 | 6.85 | cola pesada | 0.417 | 2.54 |
+| BNB | 1060 | 4.22 | cola pesada | 0.408 | 2.64 |
+| PAXG | 1060 | 3.58 | cola pesada | 0.741 | 2.66 |
 | SPYB | 8491 | 6.46 | cola pesada | 0.203 | 2.55 |
 | SMHB | 6636 | 9.44 | cola pesada | 0.618 | 2.48 |
 
@@ -223,7 +223,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 388.2x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.4397, confirmado_estres_hoy=no (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.06 vs mediana 1.30, persistencia phi=0.91
 - **cDCC**: pctl_corr=0.851 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.31, -0.21, -0.5], persistencia_dcc=0.991 — persistencia_dcc=0.991 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.393; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.361; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
