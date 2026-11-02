@@ -1,19 +1,20 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-11-01T11:52:16Z
-**Caducidad (UTC, ISO 8601):** 2026-11-02T23:52:16Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
+**Generado (UTC, ISO 8601):** 2026-11-02T06:02:51Z
+**Caducidad (UTC, ISO 8601):** 2026-11-03T18:02:51Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
 
 ## Frescura de los datos
 
-- **MS-VAR**: input mas viejo hace 3 dia(s) (fuente: fred).
-- **MS-VAR (largo)**: input mas viejo hace 3 dia(s) (fuente: fred).
-- **BVAR-SV**: input mas viejo hace 3 dia(s) (fuente: fred).
-- **cDCC**: input mas viejo hace 3 dia(s) (fuente: fred).
-- **GARCH-t**: input mas viejo hace 2 dia(s) (fuente: yahoo).
+- **MS-VAR**: input mas viejo hace 4 dia(s) (fuente: fred).
+- **MS-VAR (largo)**: input mas viejo hace 4 dia(s) (fuente: fred).
+- **BVAR-SV**: input mas viejo hace 4 dia(s) (fuente: fred).
+- **cDCC**: input mas viejo hace 4 dia(s) (fuente: fred).
+- **GARCH-t**: input mas viejo hace 3 dia(s) (fuente: yahoo).
+- **Growth-at-Risk**: input mas viejo hace 1585 dia(s) (fuente: fred).
 - fuente **binance** (mejor caso): 0 dia(s).
-- fuente **fred** (mejor caso): 2 dia(s).
-- fuente **yahoo** (mejor caso): 2 dia(s).
-- fuente **indices_lectura** (mejor caso): 3 dia(s).
+- fuente **fred** (mejor caso): 3 dia(s).
+- fuente **yahoo** (mejor caso): 3 dia(s).
+- fuente **indices_lectura** (mejor caso): 4 dia(s).
 
 **IMPORTANTE**: la frescura de arriba es POR FUENTE/MODELO, no del panel entero -una fila de hoy de Binance (cotiza 24/7) no implica que las series macro de un modelo esten al dia. Ver `output/model_results.json` (`fuentes`/`modelos.*.frescura_input`) para el detalle completo por serie.
 
@@ -21,26 +22,27 @@
 
 Fuente: API de Binance (src/collect_binance.py), NO portafolio.md. Solo porcentajes: este brief es publico y no publica cantidades, precios ni valores en USD.
 
-**Capturado (UTC):** 2026-11-01T06:16:59Z -- hace 5.6 h. **Caducidad de estos pesos (UTC):** 2026-11-02T18:16:59Z (TTL del brief, contado desde la captura).
+**Capturado (UTC):** 2026-11-02T06:00:09Z -- hace 0.0 h. **Caducidad de estos pesos (UTC):** 2026-11-03T18:00:09Z (TTL del brief, contado desde la captura).
 
 | Posicion | Peso real | Peso objetivo | Desviacion |
 |---|---|---|---|
 | BTC | 16.3% | 24.0% | -7.7pp |
-| SPYB | 25.5% | 20.0% | +5.5pp |
+| SPYB | 25.4% | 20.0% | +5.4pp |
 | ETH | 8.9% | 15.0% | -6.1pp |
-| SMHB | 15.5% | 10.0% | +5.5pp |
-| BNSOL | 6.3% | 10.0% | -3.7pp |
+| SMHB | 15.6% | 10.0% | +5.6pp |
+| BNSOL | 6.2% | 10.0% | -3.8pp |
 | BNB | 5.2% | 10.0% | -4.8pp |
 | PAXG | 22.3% | 10.0% | +12.3pp |
 
 Resto no declarado (p.ej. USDT): 0.1%.
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
-- **MS-VAR**: 2026-08-22 (2.3 meses, EN RODAJE)
-- **MS-VAR (largo)**: 2026-08-22 (2.3 meses, EN RODAJE)
-- **BVAR-SV**: 2026-08-22 (2.3 meses, EN RODAJE)
+- **MS-VAR**: 2026-08-22 (2.4 meses, EN RODAJE)
+- **MS-VAR (largo)**: 2026-08-22 (2.4 meses, EN RODAJE)
+- **BVAR-SV**: 2026-08-22 (2.4 meses, EN RODAJE)
 - **cDCC**: 2026-08-23 (2.3 meses, EN RODAJE)
 - **GARCH-t**: 2026-08-23 (2.3 meses, EN RODAJE)
+- **Growth-at-Risk** (mensual, no vota): 2026-08-26 (2.2 meses, EN RODAJE)
 
 > **EN RODAJE**: MS-VAR, MS-VAR (largo), BVAR-SV, cDCC, GARCH-t siguen acumulando historial (umbral 6 meses desde su propia respec_fecha). Mientras cualquiera este en rodaje, **ninguna salida informa una decision** -se registran para medir la tasa de falsos positivos antes de darles voz.
 
@@ -52,9 +54,10 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 0.000 | 0.50 | no | 9192 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.009 | 0.35 | no | 725 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.371 | 0.90 | no | 730 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.421 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.261 | 0.90 | no | 7 | ok · rodaje |
+| Growth-at-Risk | P(crecimiento PIB<0, h=4) — NO prob. de regimen | 0.006 | — | no (mensual, no vota) | 219 | ok · rodaje |
 
-**Concordancia: 0 de 4 modelos evaluables.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
+**Concordancia: 0 de 4 modelos evaluables.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|, y P(crecimiento<0) de Growth-at-Risk es la probabilidad de un evento macro a un anio vista -no de un regimen de mercado hoy, y ni siquiera vota-: no compares las cifras entre si.
 
 ---
 
@@ -175,15 +178,109 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1066 | 4.35 | cola pesada | 0.711 | 2.64 |
-| ETH | 1066 | 3.73 | cola pesada | 0.705 | 2.66 |
-| BNSOL | 1066 | 6.84 | cola pesada | 0.476 | 2.54 |
-| BNB | 1066 | 4.19 | cola pesada | 0.547 | 2.64 |
-| PAXG | 1066 | 3.55 | cola pesada | 0.479 | 2.66 |
+| BTC | 1067 | 4.34 | cola pesada | 0.631 | 2.64 |
+| ETH | 1067 | 3.73 | cola pesada | 0.659 | 2.66 |
+| BNSOL | 1067 | 6.83 | cola pesada | 0.326 | 2.54 |
+| BNB | 1067 | 4.18 | cola pesada | 0.613 | 2.64 |
+| PAXG | 1067 | 3.55 | cola pesada | 0.768 | 2.66 |
 | SPYB | 8496 | 6.46 | cola pesada | 0.008 | 2.55 |
 | SMHB | 6641 | 9.44 | cola pesada | 0.003 | 2.48 |
 
 `hoy_percentil` es donde cae el retorno de HOY en la distribucion t ajustada (0.5=mediana, cerca de 0 o 1=movimiento extremo). `nu` por encima de ~10 se reporta como categoria ("cola moderada o gaussiana"), no como numero puntual -la informacion de Fisher sobre nu decae ahi y el valor exacto deja de ser fiable, aunque el VaR/ES que se deriva de el casi no cambia en esa zona.
+
+---
+
+## Risk budgeting — reparto del aporte mensual
+
+**Asignacion NO calculada: requiere un monto de aporte real y explicito. La corrida automatica (cron, sin --aporte) NUNCA calcula sobre un monto inventado, cero, o el ultimo conocido -ver DEFECTO 1, PR de trazabilidad de aportes (2026-09-05). Para calcular la asignacion real: `python3 src/run_models.py --risk-budget --aporte VALOR`, o `scripts/run_aporte_real.sh VALOR` (ademas versiona el resultado).**
+
+---
+
+## Growth-at-Risk — riesgo a la baja del crecimiento del PIB
+
+Adrian-Boyarchenko-Giannone (2019): regresion cuantilica de Y_{t+h} (crecimiento anualizado promedio del PIB real a h trimestres) sobre y_t (crecimiento contemporaneo) y NFCI_t (condiciones financieras), una regresion INDEPENDIENTE por cuantil. **No vota, no entra en la concordancia de arriba: mensual, y su estadistico es un cuantil de crecimiento del PIB, no una probabilidad de regimen de mercado** -ver models/gar.py.
+
+> **EN RODAJE** (2.2 de 6 meses desde su propia respec_fecha): se acumula en regime_history.csv para medir falsos positivos, no informa ninguna decision.
+
+**Cuantiles del crecimiento del PIB a h=4 trimestres, dado hoy** (y_t=3.31%, NFCI_t=-0.541, dato mas reciente: 2026Q3)
+
+| Cuantil (tau) | Crecimiento PIB anualizado (%) |
+|---|---|
+| 0.05 | 1.11 |
+| 0.10 | 1.46 |
+| 0.25 | 2.19 |
+| 0.50 | 2.99 |
+| 0.75 | 4.07 |
+| 0.90 | 4.71 |
+| 0.95 | 5.67 |
+
+**Derivados de la densidad ajustada** (skew-t de Jones-Faddy sobre los 7 cuantiles, por minimos cuadrados)
+
+| Medida | Valor |
+|---|---|
+| P(crecimiento del PIB < 0% a h=4) | 0.6% |
+| Expected shortfall al 5% | 0.57% |
+
+**Asimetria de la distribucion condicional** (el hallazgo central de ABG: la cola izquierda se mueve con las condiciones financieras, la derecha mucho menos)
+
+| Medida | Valor |
+|---|---|
+| Distancia q0.05 -> mediana | 1.87pp |
+| Distancia mediana -> q0.95 | 2.68pp |
+| Asimetria de Bowley ((q95-q50)-(q50-q05))/(q95-q05) | 0.178 |
+
+Distancia mayor hacia arriba que hacia abajo -> asimetria al alza (tipico en calma); lo opuesto (cola izquierda mas ancha) en estres financiero.
+
+
+**Coeficiente de NFCI por cuantil** (en Y_fwd = a + b·y_t + c·NFCI_t; el patron de ABG es c muy negativo en tau bajos, cercano a cero o positivo en tau altos)
+
+| Cuantil (tau) | c_NFCI | p-value | Significativo (5%) |
+|---|---|---|---|
+| 0.05 | -1.934 | 0.0000 | SI |
+| 0.10 | -1.484 | 0.0000 | SI |
+| 0.25 | -1.138 | 0.0000 | SI |
+| 0.50 | -0.417 | 0.0038 | SI |
+| 0.75 | -0.199 | 0.1980 | no |
+| 0.90 | 0.245 | 0.1066 | no |
+| 0.95 | 0.839 | 0.0069 | SI |
+
+> **Nota sobre tau=0.95:** en esta muestra sale POSITIVO y significativo (c=+0.84, p=0.007; excluyendo el año 2020 completo SUBE a +1.19, p<0.0001), distinto de ABG (muestra hasta ~2015). Lectura: con h=4 (un año vista), condiciones financieras tensas HOY predicen recesion-y-rebote dentro del horizonte de un año, lo que empuja el cuantil alto al alza — es una diferencia real de periodo muestral (esta muestra cubre 2015-2025), no sesgo de variable omitida: y_t siempre estuvo en la regresion. Ver models/gar.py para el detalle completo.
+
+**Comparacion con el mes anterior** (corrida 2026-10-02, dato 2026Q2)
+
+| Cuantil | Valor anterior | Valor actual | Delta (pp) |
+|---|---|---|---|
+| 0.05 | 0.86 | 1.11 | +0.26 |
+| 0.10 | 1.24 | 1.46 | +0.22 |
+| 0.25 | 2.12 | 2.19 | +0.07 |
+| 0.50 | 2.88 | 2.99 | +0.10 |
+| 0.75 | 4.02 | 4.07 | +0.05 |
+| 0.90 | 4.71 | 4.71 | +0.00 |
+| 0.95 | 5.73 | 5.67 | -0.07 |
+
+Cola izquierda (cuantil 0.05) se desplazo al ALZA (menos riesgo) desde el mes anterior (+0.26pp).
+
+
+**Diagnostico**
+
+| Diagnostico | Valor |
+|---|---|
+| Dato GDPC1 mas reciente usado | 2026Q3 |
+| Muestra de estimacion | 1971Q1 a 2025Q3 (219 obs; los ultimos 4 trimestres no entran en la estimacion, Y_fwd todavia no se realiza) |
+| Cruce de cuantiles en la muestra (no deberia haber) | 3/219 (1.4%) |
+| Backtest: gana el condicional vs. incondicional | 7/7 cuantiles |
+
+**Backtest por cuantil** (perdida pinball, condicional -con NFCI- vs. incondicional; cobertura empirica deberia acercarse al cuantil nominal)
+
+| Cuantil | Mejora del condicional | p-value | Cobertura empirica |
+|---|---|---|---|
+| 0.05 | 0.0495 | 0.0305 | 5.5% |
+| 0.10 | 0.1037 | 0.0001 | 10.5% |
+| 0.25 | 0.0909 | 0.0083 | 25.6% |
+| 0.50 | 0.0397 | 0.0334 | 49.8% |
+| 0.75 | 0.0091 | 0.3286 | 74.9% |
+| 0.90 | 0.0077 | 0.1568 | 89.5% |
+| 0.95 | 0.0092 | 0.3488 | 94.5% |
 
 ---
 
@@ -220,7 +317,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 388.3x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.4266, confirmado_estres_hoy=no (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=0.94 vs mediana 1.29, persistencia phi=0.87
 - **cDCC**: pctl_corr=0.371 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.35, -0.25, -0.57], persistencia_dcc=0.468
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.711; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.631; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
