@@ -1,20 +1,20 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-11-11T06:03:25Z
-**Caducidad (UTC, ISO 8601):** 2026-11-12T18:03:25Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
+**Generado (UTC, ISO 8601):** 2026-11-12T06:02:59Z
+**Caducidad (UTC, ISO 8601):** 2026-11-13T18:03:00Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
 
 ## Frescura de los datos
 
-- **MS-VAR**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **MS-VAR (largo)**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **BVAR-SV**: input mas viejo hace 2 dia(s) (fuente: fred).
-- **cDCC**: input mas viejo hace 2 dia(s) (fuente: fred).
+- **MS-VAR**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **MS-VAR (largo)**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **BVAR-SV**: input mas viejo hace 3 dia(s) (fuente: fred).
+- **cDCC**: input mas viejo hace 3 dia(s) (fuente: fred).
 - **GARCH-t**: input mas viejo hace 1 dia(s) (fuente: yahoo).
-- **Growth-at-Risk**: input mas viejo hace 1594 dia(s) (fuente: fred).
+- **Growth-at-Risk**: input mas viejo hace 1595 dia(s) (fuente: fred).
 - fuente **binance** (mejor caso): 0 dia(s).
 - fuente **fred** (mejor caso): 1 dia(s).
 - fuente **yahoo** (mejor caso): 1 dia(s).
-- fuente **indices_lectura** (mejor caso): 5 dia(s).
+- fuente **indices_lectura** (mejor caso): 2 dia(s).
 
 **IMPORTANTE**: la frescura de arriba es POR FUENTE/MODELO, no del panel entero -una fila de hoy de Binance (cotiza 24/7) no implica que las series macro de un modelo esten al dia. Ver `output/model_results.json` (`fuentes`/`modelos.*.frescura_input`) para el detalle completo por serie.
 
@@ -22,27 +22,27 @@
 
 Fuente: API de Binance (src/collect_binance.py), NO portafolio.md. Solo porcentajes: este brief es publico y no publica cantidades, precios ni valores en USD.
 
-**Capturado (UTC):** 2026-11-11T06:00:10Z -- hace 0.1 h. **Caducidad de estos pesos (UTC):** 2026-11-12T18:00:10Z (TTL del brief, contado desde la captura).
+**Capturado (UTC):** 2026-11-12T06:00:10Z -- hace 0.0 h. **Caducidad de estos pesos (UTC):** 2026-11-13T18:00:10Z (TTL del brief, contado desde la captura).
 
 | Posicion | Peso real | Peso objetivo | Desviacion |
 |---|---|---|---|
 | BTC | 14.2% | 24.0% | -9.8pp |
-| SPYB | 23.2% | 20.0% | +3.2pp |
+| SPYB | 23.5% | 20.0% | +3.5pp |
 | ETH | 7.4% | 15.0% | -7.6pp |
-| SMHB | 13.5% | 10.0% | +3.5pp |
+| SMHB | 13.3% | 10.0% | +3.3pp |
 | BNSOL | 5.0% | 10.0% | -5.0pp |
 | BNB | 4.6% | 10.0% | -5.4pp |
-| PAXG | 21.2% | 10.0% | +11.2pp |
+| PAXG | 21.0% | 10.0% | +11.0pp |
 
-Resto no declarado (p.ej. USDT): 10.9%.
+Resto no declarado (p.ej. USDT): 11.0%.
 
 Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de una fecha unica):
 - **MS-VAR**: 2026-08-22 (2.7 meses, EN RODAJE)
 - **MS-VAR (largo)**: 2026-08-22 (2.7 meses, EN RODAJE)
 - **BVAR-SV**: 2026-08-22 (2.7 meses, EN RODAJE)
-- **cDCC**: 2026-08-23 (2.6 meses, EN RODAJE)
-- **GARCH-t**: 2026-08-23 (2.6 meses, EN RODAJE)
-- **Growth-at-Risk** (mensual, no vota): 2026-08-26 (2.5 meses, EN RODAJE)
+- **cDCC**: 2026-08-23 (2.7 meses, EN RODAJE)
+- **GARCH-t**: 2026-08-23 (2.7 meses, EN RODAJE)
+- **Growth-at-Risk** (mensual, no vota): 2026-08-26 (2.6 meses, EN RODAJE)
 
 > **EN RODAJE**: MS-VAR, MS-VAR (largo), BVAR-SV, cDCC, GARCH-t siguen acumulando historial (umbral 6 meses desde su propia respec_fecha). Mientras cualquiera este en rodaje, **ninguna salida informa una decision** -se registran para medir la tasa de falsos positivos antes de darles voz.
 
@@ -54,7 +54,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 1.000 | 0.50 | SI | 9199 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.011 | 0.35 | no | 731 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.178 | 0.90 | no | 736 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.588 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.270 | 0.90 | no | 7 | ok · rodaje |
 | Growth-at-Risk | P(crecimiento PIB<0, h=4) — NO prob. de regimen | 0.006 | — | no (mensual, no vota) | 219 | ok · rodaje |
 
 **Concordancia: 1 de 4 modelos evaluables.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|, y P(crecimiento<0) de Growth-at-Risk es la probabilidad de un evento macro a un anio vista -no de un regimen de mercado hoy, y ni siquiera vota-: no compares las cifras entre si.
@@ -178,13 +178,13 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1075 | 4.36 | cola pesada | 0.206 | 2.63 |
-| ETH | 1075 | 3.75 | cola pesada | 0.152 | 2.66 |
-| BNSOL | 1075 | 6.88 | cola pesada | 0.099 | 2.54 |
-| BNB | 1075 | 4.18 | cola pesada | 0.194 | 2.64 |
-| PAXG | 1075 | 3.57 | cola pesada | 0.043 | 2.66 |
-| SPYB | 8503 | 6.43 | cola pesada | 0.393 | 2.55 |
-| SMHB | 6648 | 9.36 | cola pesada | 0.415 | 2.48 |
+| BTC | 1076 | 4.36 | cola pesada | 0.365 | 2.64 |
+| ETH | 1076 | 3.74 | cola pesada | 0.311 | 2.66 |
+| BNSOL | 1076 | 6.86 | cola pesada | 0.406 | 2.54 |
+| BNB | 1076 | 4.18 | cola pesada | 0.214 | 2.64 |
+| PAXG | 1076 | 3.58 | cola pesada | 0.026 | 2.66 |
+| SPYB | 8504 | 6.43 | cola pesada | 0.812 | 2.55 |
+| SMHB | 6649 | 9.37 | cola pesada | 0.889 | 2.48 |
 
 `hoy_percentil` es donde cae el retorno de HOY en la distribucion t ajustada (0.5=mediana, cerca de 0 o 1=movimiento extremo). `nu` por encima de ~10 se reporta como categoria ("cola moderada o gaussiana"), no como numero puntual -la informacion de Fisher sobre nu decae ahi y el valor exacto deja de ser fiable, aunque el VaR/ES que se deriva de el casi no cambia en esa zona.
 
@@ -198,15 +198,15 @@ Contribucion marginal y total al riesgo desde Sigma=D·R·D del cDCC (D de GARCH
 
 | Posicion | Peso actual | Contrib. riesgo (PCTR) | Objetivo ERC | Deficit | Aporte sugerido ($) |
 |---|---|---|---|---|---|
-| BTC | 15.9% | 17.1% | 12.7% | -3.2pp | 20 |
+| BTC | 16.0% | 17.6% | 12.5% | -3.5pp | 20 |
 | ETH | 8.3% | 15.1% | 7.5% | -0.8pp | 13 |
-| BNSOL | 5.6% | 9.4% | 8.0% | +2.4pp | 17 |
-| BNB | 5.2% | 5.2% | 5.2% | +0.0pp | 8 |
-| PAXG | 23.8% | 8.5% | 34.8% | +11.1pp | 55 |
-| SPYB | 26.1% | 17.8% | 22.5% | -3.6pp | 0 |
-| SMHB | 15.1% | 27.0% | 9.2% | -5.9pp | 0 |
+| BNSOL | 5.7% | 9.7% | 7.8% | +2.1pp | 16 |
+| BNB | 5.1% | 5.2% | 5.1% | +0.0pp | 8 |
+| PAXG | 23.6% | 8.3% | 35.1% | +11.5pp | 56 |
+| SPYB | 26.4% | 17.6% | 22.8% | -3.6pp | 0 |
+| SMHB | 14.9% | 26.5% | 9.2% | -5.7pp | 0 |
 
-sigma_p actual: 1.5792 -> tras el aporte: 1.5643. SOLO-COMPRA: el reparto del aporte nunca vende (regla de diseno del aporte; la restriccion fiscal de tenencia minima ya NO esta vigente, decision de Carlos 2026-10-02).
+sigma_p actual: 1.5042 -> tras el aporte: 1.4890. SOLO-COMPRA: el reparto del aporte nunca vende (regla de diseno del aporte; la restriccion fiscal de tenencia minima ya NO esta vigente, decision de Carlos 2026-10-02).
 
 ---
 
@@ -214,7 +214,7 @@ sigma_p actual: 1.5792 -> tras el aporte: 1.5643. SOLO-COMPRA: el reparto del ap
 
 Adrian-Boyarchenko-Giannone (2019): regresion cuantilica de Y_{t+h} (crecimiento anualizado promedio del PIB real a h trimestres) sobre y_t (crecimiento contemporaneo) y NFCI_t (condiciones financieras), una regresion INDEPENDIENTE por cuantil. **No vota, no entra en la concordancia de arriba: mensual, y su estadistico es un cuantil de crecimiento del PIB, no una probabilidad de regimen de mercado** -ver models/gar.py.
 
-> **EN RODAJE** (2.5 de 6 meses desde su propia respec_fecha): se acumula en regime_history.csv para medir falsos positivos, no informa ninguna decision.
+> **EN RODAJE** (2.6 de 6 meses desde su propia respec_fecha): se acumula en regime_history.csv para medir falsos positivos, no informa ninguna decision.
 
 **Cuantiles del crecimiento del PIB a h=4 trimestres, dado hoy** (y_t=3.31%, NFCI_t=-0.541, dato mas reciente: 2026Q3)
 
@@ -260,7 +260,7 @@ Distancia mayor hacia arriba que hacia abajo -> asimetria al alza (tipico en cal
 
 > **Nota sobre tau=0.95:** en esta muestra sale POSITIVO y significativo (c=+0.84, p=0.007; excluyendo el año 2020 completo SUBE a +1.19, p<0.0001), distinto de ABG (muestra hasta ~2015). Lectura: con h=4 (un año vista), condiciones financieras tensas HOY predicen recesion-y-rebote dentro del horizonte de un año, lo que empuja el cuantil alto al alza — es una diferencia real de periodo muestral (esta muestra cubre 2015-2025), no sesgo de variable omitida: y_t siempre estuvo en la regresion. Ver models/gar.py para el detalle completo.
 
-**Comparacion con el mes anterior** (corrida 2026-11-10, dato 2026Q3)
+**Comparacion con el mes anterior** (corrida 2026-11-11, dato 2026Q3)
 
 | Cuantil | Valor anterior | Valor actual | Delta (pp) |
 |---|---|---|---|
@@ -309,7 +309,7 @@ Construidos por bancos centrales o academicos sobre decenas o cientos de series 
 | NFCI | 2026-10-30 | -0.459 | 44% | 0.008 | 2913 |
 | ANFCI | 2026-10-30 | -0.435 | 46% | 0.008 | 2913 |
 | STLFSI4 | 2026-10-30 | -0.522 | 26% | 0.062 | 1714 |
-| CISS (BCE) | 2026-11-06 | 0.005 | 6% | -0.006 | 7274 |
+| CISS (BCE) | 2026-11-10 | 0.006 | 6% | -0.002 | 7276 |
 
 **Mensuales** (cambio vs. ~30 dias antes)
 
@@ -331,7 +331,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 389.6x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=1.0000, confirmado_estres_hoy=si (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.12 vs mediana 1.29, persistencia phi=0.90
 - **cDCC**: pctl_corr=0.178 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.22, -0.17, -0.58], persistencia_dcc=0.483
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.206; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.365; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
