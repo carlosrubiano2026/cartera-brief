@@ -1,28 +1,28 @@
 # DETECTORES DE REGIMEN
 
-**Generado (UTC, ISO 8601):** 2026-11-23T06:04:42Z
-**Caducidad (UTC, ISO 8601):** 2026-11-24T18:04:42Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
+**Generado (UTC, ISO 8601):** 2026-11-24T06:04:30Z
+**Caducidad (UTC, ISO 8601):** 2026-11-25T18:04:30Z -- TTL=36h, FIJADO por Carlos el 2026-09-10 (ver src/run_models.py, TTL_BRIEF_HORAS, para el argumento completo y la condicion de reapertura). Pasada esta fecha, este documento NO debe usarse para decidir sin verificar antes que la publicacion de hoy funciono.
 
-**Código en producción:** cc0246e7d5b7600730e399e28ece93b535764e38 (DESPLEGADO 2d34cc10bd7aefc091921fa89dfc48dc565bccc1->cc0246e7d5b7600730e399e28ece93b535764e38)
+**Código en producción:** cc0246e7d5b7600730e399e28ece93b535764e38 (SIN_CAMBIOS cc0246e7d5b7600730e399e28ece93b535764e38)
 
-**Corrector vs producción:** la corrida del 2026-11-22 no cambió la huella medida del checkout (rama, HEAD, status, contenido modificado, .env*, data/**, .git/config, refs/heads y stash)
+**Corrector vs producción:** la corrida del 2026-11-23 no cambió la huella medida del checkout (rama, HEAD, status, contenido modificado, .env*, data/**, .git/config, refs/heads y stash)
 
-**Revisor vs producción:** desconocido (no existe .revisor_produccion_estado.json: el revisor no ha corrido con la red de seguridad)
+**Revisor vs producción:** la corrida del 2026-11-23 no cambió la huella medida del checkout (rama, HEAD, status, contenido modificado, .env*, data/**, .git/config, refs/heads y stash)
 
-> **ALERTA: Codex sin créditos desde 2026-11-22.** Las revisiones cruzadas y los agentes que usan Codex (corrector, revisor) no evaluan nada hasta recargarlos: ningun PR se mergea por ellos.
+> **ALERTA: Codex sin créditos desde 2026-11-23.** Las revisiones cruzadas y los agentes que usan Codex (corrector, revisor) no evaluan nada hasta recargarlos: ningun PR se mergea por ellos.
 
-**Revisor:** desconocido (no existe .revisor_estado.json: el revisor no ha corrido)
+**Revisor (corrida del 2026-11-23):** 1 revisados, 0 mergeados, 0 cambios pedidos, 0 atascados, 0 cerrados (ensayo)
 
 ## Frescura de los datos
 
-- **MS-VAR**: input mas viejo hace 4 dia(s) (fuente: fred).
-- **MS-VAR (largo)**: input mas viejo hace 4 dia(s) (fuente: fred).
-- **BVAR-SV**: input mas viejo hace 4 dia(s) (fuente: fred).
-- **cDCC**: input mas viejo hace 4 dia(s) (fuente: fred).
-- **GARCH-t**: input mas viejo hace 3 dia(s) (fuente: yahoo).
+- **MS-VAR**: input mas viejo hace 5 dia(s) (fuente: fred).
+- **MS-VAR (largo)**: input mas viejo hace 5 dia(s) (fuente: fred).
+- **BVAR-SV**: input mas viejo hace 5 dia(s) (fuente: fred).
+- **cDCC**: input mas viejo hace 5 dia(s) (fuente: fred).
+- **GARCH-t**: input mas viejo hace 1 dia(s) (fuente: yahoo).
 - fuente **binance** (mejor caso): 0 dia(s).
-- fuente **fred** (mejor caso): 3 dia(s).
-- fuente **yahoo** (mejor caso): 3 dia(s).
+- fuente **fred** (mejor caso): 1 dia(s).
+- fuente **yahoo** (mejor caso): 1 dia(s).
 - fuente **indices_lectura** (mejor caso): 4 dia(s).
 
 **IMPORTANTE**: la frescura de arriba es POR FUENTE/MODELO, no del panel entero -una fila de hoy de Binance (cotiza 24/7) no implica que las series macro de un modelo esten al dia. Ver `output/model_results.json` (`fuentes`/`modelos.*.frescura_input`) para el detalle completo por serie.
@@ -31,17 +31,17 @@
 
 Fuente: API de Binance (src/collect_binance.py), NO portafolio.md. Solo porcentajes: este brief es publico y no publica cantidades, precios ni valores en USD.
 
-**Capturado (UTC):** 2026-11-23T06:00:18Z -- hace 0.1 h. **Caducidad de estos pesos (UTC):** 2026-11-24T18:00:18Z (TTL del brief, contado desde la captura).
+**Capturado (UTC):** 2026-11-24T06:00:07Z -- hace 0.1 h. **Caducidad de estos pesos (UTC):** 2026-11-25T18:00:07Z (TTL del brief, contado desde la captura).
 
 | Posicion | Peso real | Peso objetivo | Desviacion |
 |---|---|---|---|
-| BTC | 15.3% | 24.0% | -8.7pp |
-| SPYB | 24.7% | 20.0% | +4.7pp |
-| ETH | 8.2% | 15.0% | -6.8pp |
-| SMHB | 12.9% | 10.0% | +2.9pp |
-| BNSOL | 6.5% | 10.0% | -3.5pp |
-| BNB | 5.0% | 10.0% | -5.0pp |
-| PAXG | 27.1% | 10.0% | +17.1pp |
+| BTC | 14.9% | 24.0% | -9.1pp |
+| SPYB | 25.0% | 20.0% | +5.0pp |
+| ETH | 8.0% | 15.0% | -7.0pp |
+| SMHB | 13.9% | 10.0% | +3.9pp |
+| BNSOL | 6.4% | 10.0% | -3.6pp |
+| BNB | 4.9% | 10.0% | -5.1pp |
+| PAXG | 26.8% | 10.0% | +16.8pp |
 
 Resto no declarado (p.ej. USDT): 0.2%.
 
@@ -50,7 +50,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 - **MS-VAR (largo)**: 2026-08-22 (3.1 meses, EN RODAJE)
 - **BVAR-SV**: 2026-08-22 (3.1 meses, EN RODAJE)
 - **cDCC**: 2026-11-17 (0.2 meses, EN RODAJE)
-- **GARCH-t**: 2026-08-23 (3.0 meses, EN RODAJE)
+- **GARCH-t**: 2026-08-23 (3.1 meses, EN RODAJE)
 
 > **EN RODAJE**: MS-VAR, MS-VAR (largo), BVAR-SV, cDCC, GARCH-t siguen acumulando historial (umbral 6 meses desde su propia respec_fecha). Mientras cualquiera este en rodaje, **ninguna salida informa una decision** -se registran para medir la tasa de falsos positivos antes de darles voz.
 
@@ -62,7 +62,7 @@ Reespecificacion por modelo (el rodaje de cada uno cuenta desde la suya, no de u
 | MS-VAR (largo) | estres confirmado >=2d (hoy) | 1.000 | 0.50 | SI | 9206 | ok · rodaje |
 | BVAR-SV | P(sigma_T > q90) | 0.063 | 0.35 | no | 738 | ok · rodaje |
 | cDCC | pctl_corr (NO prob.) | 0.215 | 0.90 | no | 744 | ok · rodaje |
-| GARCH-t | extremeza BTC (2 colas) | 0.836 | 0.90 | no | 7 | ok · rodaje |
+| GARCH-t | extremeza BTC (2 colas) | 0.460 | 0.90 | no | 7 | ok · rodaje |
 
 **Concordancia: 1 de 4 modelos evaluables.** Cada estadistico tiene una nula DISTINTA (MS-VAR ~0.01, BVAR-SV 0.10 por construccion, cDCC ~0.50, GARCH-t ~0.0 bajo H0) y VARIOS DE ELLOS NO SON PROBABILIDADES DE REGIMEN COMPARABLES ENTRE SI -pctl_corr de cDCC es un rango percentil, la extremeza de GARCH-t es |2*percentil-1|-: no compares las cifras entre si.
 
@@ -188,13 +188,13 @@ GARCH(1,1)-t (MLE conjunta de nu) por posicion de config/portfolio.yaml. SPYB/SM
 
 | Posicion | n_obs | nu | categoria | hoy_percentil | VaR99 (sigma) |
 |---|---|---|---|---|---|
-| BTC | 1087 | 4.29 | cola pesada | 0.918 | 2.64 |
-| ETH | 1087 | 3.74 | cola pesada | 0.876 | 2.66 |
-| BNSOL | 1087 | 6.88 | cola pesada | 0.830 | 2.54 |
-| BNB | 1087 | 4.09 | cola pesada | 0.850 | 2.65 |
-| PAXG | 1087 | 3.65 | cola pesada | 0.920 | 2.66 |
-| SPYB | 8511 | 6.44 | cola pesada | 0.009 | 2.55 |
-| SMHB | 6656 | 9.35 | cola pesada | 0.003 | 2.48 |
+| BTC | 1088 | 4.28 | cola pesada | 0.270 | 2.64 |
+| ETH | 1088 | 3.74 | cola pesada | 0.319 | 2.66 |
+| BNSOL | 1088 | 6.85 | cola pesada | 0.487 | 2.54 |
+| BNB | 1088 | 4.08 | cola pesada | 0.367 | 2.65 |
+| PAXG | 1088 | 3.64 | cola pesada | 0.593 | 2.66 |
+| SPYB | 8512 | 6.44 | cola pesada | 0.989 | 2.55 |
+| SMHB | 6657 | 9.32 | cola pesada | 0.997 | 2.48 |
 
 `hoy_percentil` es donde cae el retorno de HOY en la distribucion t ajustada (0.5=mediana, cerca de 0 o 1=movimiento extremo). `nu` por encima de ~10 se reporta como categoria ("cola moderada o gaussiana"), no como numero puntual -la informacion de Fisher sobre nu decae ahi y el valor exacto deja de ser fiable, aunque el VaR/ES que se deriva de el casi no cambia en esa zona.
 
@@ -211,7 +211,7 @@ Construidos por bancos centrales o academicos sobre decenas o cientos de series 
 | NFCI | 2026-11-13 | -0.478 | 42% | -0.005 | 2915 |
 | ANFCI | 2026-11-13 | -0.502 | 38% | -0.012 | 2915 |
 | STLFSI4 | 2026-11-13 | -0.866 | 5% | -0.375 | 1716 |
-| CISS (BCE) | 2026-11-19 | 0.009 | 11% | 0.003 | 7283 |
+| CISS (BCE) | 2026-11-20 | 0.023 | 24% | 0.017 | 7284 |
 
 **Mensuales** (cambio vs. ~30 dias antes)
 
@@ -233,7 +233,7 @@ Sin concordancia. Nada que evaluar por esta via.
 - **MS-VAR (largo)**: EM (Hamilton-Kim), identificado: dispersion entre arranques 0.00%, |Sigma| ratio 387.7x, duracion 6.3d. Vota con histeresis de 2d sobre p>0.5 -ver 'REGLA DE HISTERESIS' en models/msvar.py (validado: RCM=17.39, alineacion 6/6 episodios de estres historicos, sensibilidad de A 0.033<0.05). p_suavizada de hoy=0.9997, confirmado_estres_hoy=si (2d consecutivos).
 - **BVAR-SV**: P(sigma_T > q90 de su propia trayectoria); nula=0.10. sigma_T=1.31 vs mediana 1.30, persistencia phi=0.88
 - **cDCC**: pctl_corr=0.215 (rango percentil, NO probabilidad); rho_hoy(pares)=[0.27, -0.2, -0.57], persistencia_dcc=0.990 — persistencia_dcc=0.990 > 0.98: correlacion casi integrada (analogo del IGARCH). Puede senalar un cambio de regimen en la correlacion no modelado, o ser artefacto de muestra corta -no hay evidencia aqui de cual; no se corrige. Leer rho_hoy/pctl_corr con cautela.
-- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.918; proxies: SPYB<-SPY, SMHB<-SMH
+- **GARCH-t**: p_stress = extremeza de dos colas de BTC (|2*hoy_percentil-1|); hoy_percentil BTC=0.270; proxies: SPYB<-SPY, SMHB<-SMH
 
 ---
 Los modelos no emiten senal de compra ni de venta. Estiman el estado latente de las variables que ya se vigilan. La decision sigue gobernada por los cinco gatillos de las instrucciones del proyecto.
